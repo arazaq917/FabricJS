@@ -1,0 +1,13 @@
+.left {
+  float: left;
+  background-color: rgb(198, 199, 197);
+  width: 23%;
+  height: 100vh;
+}
+.header{
+  display: flex;
+  justify-content: center;
+}
+.container{
+  margin-left: 10px;
+}

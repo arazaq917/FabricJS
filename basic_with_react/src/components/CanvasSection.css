@@ -1,0 +1,28 @@
+.canvasSection {
+  box-sizing: border-box;
+  float: left;
+  width: 55%;
+  height: 100vh;
+  background-color: #534f4f;
+  box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.5);
+}
+.canvas{
+  margin-top: 5px;
+  margin: auto;
+  width: 600px;
+  /* display: flex;
+  justify-content: center; */
+}
+.header{
+  display: flex;
+  justify-content: center;
+}
+.clear{
+  margin: auto;
+  width: 540px;
+  margin-bottom: 5px;
+  /* position: fixed; */
+    /* left: 50%; */
+    /* transform: translate(-50%, -50%); */
+}
+
