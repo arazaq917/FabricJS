@@ -47,7 +47,7 @@ const LeftSection = (props) => {
         <Button onClick={addImage}>Add Image</Button>
         <Button onClick={svgImage}>Add SVG</Button>
         <h4>Custom Image</h4>
-        <input type="file" onChange={customImg} />
+        <input type="file" onChange={customImg} accept="image/*" />
       </div>
     </div>
   );

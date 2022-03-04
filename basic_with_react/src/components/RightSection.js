@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "../UI/Button";
 import "./RightSection.css";
 
@@ -33,12 +33,35 @@ const RightSection = (props) => {
   const redoCanvas = () => {
     props.redo();
   };
-
+  const undoFill = () => {
+    props.filter("clear");
+  };
   const applyFilter = (e) => {
-    if (e.target.checked) {
-      props.filter();
+    switch (e.target.innerText) {
+      case "Sepia": {
+        props.filter("sepia");
+        break;
+      }
+      case "Brownie": {
+        props.filter("brownie");
+
+        break;
+      }
+      case "Vintage": {
+        props.filter("vintage");
+
+        break;
+      }
+      default:
     }
   };
+
+  // function addClass(btn) {
+  //   btn.preventDefault();
+  //   var active = document.querySelector(".active");
+  //   if (active) btn.target.classList.remove("active");
+  //   if (!active) btn.target.classList.add("active");
+  // }
 
   return (
     <div className="right">
@@ -50,8 +73,18 @@ const RightSection = (props) => {
         <input type="color" onChange={colorPicker} />
         <br />
         <br />
-        <label>Filter: </label>
-        <input type="checkbox" onChange={applyFilter} />
+        <Button onClick={undoFill}>Original</Button>
+        <br />
+        <br />
+        <button className="filter"onClick={applyFilter}>
+          Brownie
+        </button>
+        <button className="filter" onClick={applyFilter}>
+          Sepia
+        </button>
+        <button className="filter" onClick={applyFilter}>
+          Vintage
+        </button>
         <br />
         <br />
         {props.arr[0] && (
@@ -62,9 +95,13 @@ const RightSection = (props) => {
         )}
         {props.text && (
           <div>
-            <Button onClick={textBold}>B</Button>
+            <Button id="bold" onClick={textBold}>
+              B
+            </Button>
             <Button onClick={textUnder}>U</Button>
-            <Button onClick={textItalic}>I</Button>
+            <Button value={props.text} onClick={textItalic}>
+              I
+            </Button>
             <br />
             <br />
             <span>Change Text</span>

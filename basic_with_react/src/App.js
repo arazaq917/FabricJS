@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { fabric } from "fabric";
+import "fabric-history";
 import LeftSection from "./components/LeftSection";
 import RightSection from "./components/RightSection";
 import CanvasSection from "./components/CanvasSection";
 import { useDispatch, useSelector } from "react-redux";
 import { canvasAction } from "./store/CanvasSlice";
 import "./App.css";
+import Toggle from "./components/randomCode";
 
 function App() {
   const [text, setText] = useState("");
@@ -43,12 +45,6 @@ function App() {
     clear();
     setObjArr([]);
   };
-  // const setBackground = (url, canvas) => {
-  //   fabric.Image.fromURL(url, (img) => {
-  //     canvas.backgroundImage = img;
-  //     canvas.renderAll();
-  //   });
-  // };
 
   const addCircle = () => {
     var circle = new fabric.Circle({
@@ -56,6 +52,9 @@ function App() {
       left: 250,
       top: 250,
       fill: "#aac",
+      borderColor: "red",
+      strokeWidth: 3,
+      stroke: "#880E4F",
       cornerColor: "white",
       id: Date().toString(),
     });
@@ -74,15 +73,30 @@ function App() {
       left: 200,
       top: 250,
       fill: "rgba(255,0,0,0.5)",
+      borderColor: "red",
+      strokeWidth: 3,
+      stroke: "#880E4F",
       cornerColor: "white",
       id: Date().toString(),
     });
+    var animateBtn = document.getElementById("btn");
+    animateBtn.onclick = function () {
+      let target = canvas.getActiveObject();
+      animateBtn.disabled = true;
+      target.animate("left", target.left === 100 ? 400 : 100, {
+        duration: 1000,
+        onChange: canvas.renderAll.bind(canvas),
+        onComplete: function () {
+          animateBtn.disabled = false;
+        },
+        easing: fabric.util.ease.easeOutBounce,
+      });
+    };
     setObjArr([...objArr, rect]);
     canvas.add(rect);
     canvas.isDrawingMode = false;
     canvas.renderAll();
   };
-
   const toggleMode = (mode) => {
     if (mode === modes.pan) {
       if (currentMode === modes.pan) {
@@ -123,6 +137,7 @@ function App() {
       cornerColor: "white",
       left: 200,
       top: 250,
+      borderColor: "red",
       id: Date().toString(),
     });
     text.on("selected", function () {
@@ -131,6 +146,7 @@ function App() {
     text.on("deselected", function () {
       setText("");
     });
+    console.log(text);
     setObjArr([...objArr, text]);
     canvas.centerObject(text);
     canvas.add(text);
@@ -139,6 +155,7 @@ function App() {
   const AddTextbox = () => {
     var textbox = new fabric.Textbox("hello i am textbox", {
       cornerColor: "white",
+      borderColor: "red",
       width: 450,
       id: Date().toString(),
     });
@@ -160,39 +177,73 @@ function App() {
     canvas.requestRenderAll();
   };
   const addImage = () => {
-    fabric.Image.fromURL(
-      "http://localhost:3000/images/2.jpg",
-      (oImg) => {
-        oImg.scale(0.5).set({
-          flipX: true,
-          top: 200,
-          left: 200,
-          cornerColor: "white",
-          crossOrigin: "anonymous",
-          id: Date().toString(),
-        });
-        setObjArr([...objArr, oImg]);
-        canvas.add(oImg);
-        canvas.isDrawingMode = false;
+    fabric.Image.fromURL("http://localhost:3000/images/a.jpg", (oImg) => {
+      oImg.scale(0.5).set({
+        flipX: true,
+        top: 200,
+        left: 200,
+        cornerColor: "white",
+        borderColor: "red",
+        crossOrigin: "anonymous",
+        id: Date().toString(),
+      });
+      setObjArr([...objArr, oImg]);
+      canvas.add(oImg);
+      canvas.isDrawingMode = false;
+    });
+  };
+
+  const applyFilter = (fill) => {
+    switch (fill) {
+      case "sepia": {
+        var obj = canvas.getActiveObject();
+        if (!obj.filters[0]) {
+          obj.filters[0] = new fabric.Image.filters.Sepia();
+        } else {
+          delete obj.filters[0];
+          obj.filters[0] = new fabric.Image.filters.Sepia();
+        }
+        obj.applyFilters();
+        canvas.renderAll();
+        break;
       }
-    );
-  };
+      case "brownie": {
+        obj = canvas.getActiveObject();
+        if (!obj.filters[0]) {
+          obj.filters[0] = new fabric.Image.filters.Brownie();
+        } else {
+          delete obj.filters[0];
+          obj.filters[0] = new fabric.Image.filters.Brownie();
+        }
+        obj.applyFilters();
+        canvas.renderAll();
+        break;
+      }
+      case "vintage": {
+        obj = canvas.getActiveObject();
+        if (obj.filters[0]) {
+          obj.filters[0] = new fabric.Image.filters.Vintage();
+        } else {
+          delete obj.filters[0];
+          obj.filters[0] = new fabric.Image.filters.Vintage();
+        }
+        obj.applyFilters();
+        canvas.renderAll();
+        break;
+      }
+      case "clear": {
+        obj = canvas.getActiveObject();
+        if (obj.filters) {
+          obj.filters = [];
+        }
+        obj.applyFilters();
+        canvas.renderAll();
 
-  // var canvas2dBackend = new fabric.Canvas2dFilterBackend();
-  // console.log(canvas2dBackend);
-  // var f = fabric.Image.filters;
-  // const filters = ["sepia", "brownie"];
-
-  const applyFilter = () => {
-    var obj = canvas.getActiveObject();
-    obj.filters.push(new fabric.Image.filters.Sepia());
-    obj.applyFilters();
-    canvas.renderAll();
+        break;
+      }
+      default:
+    }
   };
-  // const sepia = () => {
-  //   applyFilter(filters[0], new f.Sepia());
-  //   console.log("Running...")
-  // };
 
   const addSVG = () => {
     fabric.loadSVGFromURL("http://localhost:3000/images/4.svg", (objects) => {
@@ -202,6 +253,7 @@ function App() {
         scaleX: 0.1,
         scaleY: 0.1,
         cornerColor: "white",
+        borderColor: "red",
         id: Date().toString(),
       });
       if (svg._objects) {
@@ -269,13 +321,13 @@ function App() {
   const customImage = (img) => {
     var reader = new FileReader();
     reader.onload = (e) => {
-      console.log("event", e);
       var imgObj = new Image();
       imgObj.src = e.target.result;
       imgObj.onload = function () {
         var image = new fabric.Image(imgObj);
         image.set({
           cornerColor: "white",
+          borderColor: "red",
           scaleX: 0.5,
           scaleY: 0.5,
         });
@@ -301,13 +353,10 @@ function App() {
 
   const changeTxt = (txt) => {
     let target = canvas.getActiveObject();
-    console.log(target.type);
     if (target.type === "text" || target.type === "textbox") {
       target.text = txt;
       setText(target.text);
       canvas.renderAll();
-    } else if (target.type === "circle") {
-      console.log("circle", target.type);
     }
   };
 
@@ -341,8 +390,6 @@ function App() {
         } else {
           target.set({ fontStyle: "italic" });
         }
-        console.log("txt", canvas);
-
         canvas.renderAll();
         break;
       }
@@ -361,21 +408,27 @@ function App() {
     // canvas.loadFromJSON(`{"objects":[${objArr[index]}],"background":"rgb(198, 199, 197)"}`);
   };
 
-  var arr = [];
+  // var arr = [];
   // var isRedoing = false;
-  const undo = () => {
-    if (canvas._objects.length > 0) {
-      canvas.discardActiveObject();
-      arr.push(canvas._objects.pop());
-      canvas.renderAll();
-    }
-  };
-  const redo = () => {
-    if (arr.length > 0) {
-      // isRedoing = true;
-      canvas.add(arr.pop());
-    }
-  };
+  // const undo = () => {
+  //   if (canvas._objects.length > 0) {
+  //     canvas.discardActiveObject();
+  //     arr.push(canvas._objects.pop());
+  //     canvas.renderAll();
+  //   }
+  // };
+  // const redo = () => {
+  //   if (arr.length > 0) {
+  //     canvas.add(arr.pop());
+  //   }
+  // };
+
+  function redo() {
+    canvas.redo();
+  }
+  function undo() {
+    canvas.undo();
+  }
 
   const addNewState = () => {
     let canvasObject = canvas.toJSON();
@@ -385,7 +438,6 @@ function App() {
   var undoStack = [];
   const retrieveLastState = () => {
     var latestState = undoStack[undoStack.length - 1];
-    console.log(undoStack);
     var parsedJSON = JSON.parse(latestState);
     canvas.loadFromJSON(parsedJSON);
     canvas.renderAll();
@@ -394,11 +446,7 @@ function App() {
   return (
     <>
       <div className="mainBody">
-      <div>
-        <button className="btn-img-filters" onClick={applyFilter}>
-          Sepia
-        </button>
-      </div>
+        <button id="btn">U</button>
         <div>
           <LeftSection
             addCircle={addCircle}
@@ -433,6 +481,7 @@ function App() {
             undo={undo}
             redo={redo}
             filter={applyFilter}
+            canvas={canvas}
           />
         </div>
       </div>

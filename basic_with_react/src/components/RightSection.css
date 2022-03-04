@@ -21,3 +21,31 @@ input[type="text"] {
   box-sizing: border-box;
   border-radius: 5px;
 }
+
+.filter {
+  font: inherit;
+  border: 1px solid #4f005f;
+  border-radius: 5px;
+  background: #4f005f;
+  color: white;
+  padding: 0.25rem 1rem;
+  cursor: pointer;
+  margin: 2px;
+}
+
+.filter:hover {
+  background: #741188;
+}
+/* 
+.filter:focus {
+  outline: none;
+  border-color: #000000;
+  background: #a892af;
+} */
+
+.active {
+  outline: none;
+  border-color: #000000;
+  background: #a892af;
+}
+
