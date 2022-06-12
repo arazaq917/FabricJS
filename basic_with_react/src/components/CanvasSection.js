@@ -36,7 +36,7 @@ const CanvasSection = (props) => {
         <Button onClick={saveCanvas}>Download</Button>
         <Button onClick={zoomInCanvas}>Zoom In</Button>
         <Button onClick={zoomOutCanvas}>Zoom Out</Button>
-        <Button onClick={onChange}>opct</Button>
+        <Button onClick={onChange}>Group</Button>
 
       </div>
       <div className="canvas">
