@@ -22,6 +22,9 @@ const CanvasSection = (props) => {
   const zoomOutCanvas = () => {
     props.zoomOutCanvas();
   }
+  const addText = () =>{
+    props.addText()
+  }
   const onChange = () => {
     props.onChange();
   };
@@ -37,6 +40,7 @@ const CanvasSection = (props) => {
         <Button onClick={zoomInCanvas}>Zoom In</Button>
         <Button onClick={zoomOutCanvas}>Zoom Out</Button>
         <Button onClick={onChange}>Group</Button>
+        <Button onClick={addText}>Add Text </Button>
 
       </div>
       <div className="canvas">

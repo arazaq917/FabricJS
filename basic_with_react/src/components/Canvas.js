@@ -6,12 +6,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { canvasAction } from "../store/CanvasSlice";
 import { fabric } from "fabric";
 import "fabric-history";
+import { act } from "@testing-library/react";
 
 const Canvas = () => {
   let [canvas, setCanvas] = useState();
   const [text, setText] = useState("");
   const [svgColor, setSvgColor] = useState([]);
   const [objArr, setObjArr] = useState([]);
+  let iLeft =0,  iTop = 0, tempCanvas;
 
   // const dispatch = useDispatch();
   // const canvas = useSelector((state) => state.canvas);
@@ -21,13 +23,66 @@ const Canvas = () => {
       height: 600,
       backgroundColor: "#c6c7c5",
     });
-    setCanvas(canvas)
-    canvas.renderAll()
+    setCanvas(canvas);
+    tempCanvas = canvas;
+    
+    canvas.renderAll();
+    canvas.on({
+      'object:moving' :movingObject,
+      'selection:created':selectionCreated,
+      'selection:updated':selectionUpdated,
+      'object:moved' : movedObject
+    }
+      
+        
+  )
     // dispatch(canvasAction.initCanvas("canvas"));
   }, []);
 
+  // Canva events 
+  const movingObject = (e)=>{
+    console.log('objects moving');
+    let actObj = e.target;
+    let tempObjs = tempCanvas._objects;
+    console.log(iLeft,iTop);
+  
+    let tObj = tempObjs.findIndex(f=>f.name === 'iText' && f.id === actObj.id);
+    if(tObj>-1){
+
+       let tempDiff = {left:actObj.left-iLeft, top:actObj.top-iTop};
+       debugger
+       console.log(tempDiff)
+       tempObjs[tObj].left = tempObjs[tObj].left+tempDiff.left;
+       tempObjs[tObj].top = tempObjs[tObj].top+tempDiff.top;
+       iLeft = actObj.left;
+       iTop = actObj.top;
+       tempCanvas.renderAll();
+    }
+  }
+  const selectionCreated = (e)=>{
+    console.log('selectionCreated');
+    if(e.selected.length == 1){
+      iLeft = e.selected[0].left;
+      iTop = e.selected[0].top;
+    }
+    console.log(iLeft,iTop);
+   
+
+  }
+  const selectionUpdated = (e)=>{
+    console.log('selection Updated');
+    if(e.selected.length == 1){
+      iLeft = e.selected[0].left;
+      iTop = e.selected[0].top;
+    }
+  }
+  const movedObject = ()=>{
+    console.log('object moved');
+  }
+
   // Canvas Function
   window.canvas = canvas;
+  
   const onChange = () => {
     let objArr=[]
     canvas.getActiveObject().setCoords();
@@ -227,7 +282,7 @@ const Canvas = () => {
     let text = new fabric.Text("hello world", {
       cornerColor: "white",
       left: left,
-      top: top-50,
+      top: top-30,
       borderColor: "red",
       fontSize:18,
       transparentCorners: false,
@@ -247,6 +302,10 @@ const Canvas = () => {
   const deleteObject = () => {
     addNewState();
     let target = canvas.getActiveObject();
+    let textObj = canvas._objects.find(f=>f.name === 'iText' && f.id === target.id);
+    if(textObj){
+      canvas.remove(textObj)
+    }
     canvas.remove(target);
     canvas.requestRenderAll();
   };
@@ -362,6 +421,50 @@ const Canvas = () => {
     canvas.setHeight(canvas.height+10);
     canvas.setWidth(canvas.width+10);
   }
+  const addText = ()=>{
+   
+    let actObj = canvas.getActiveObject();
+    console.log('text ');
+   
+    if(actObj ){
+      let cText = canvas._objects.findIndex(f=>f.name === 'iText' && f.id === actObj.id);
+      if(cText == -1){
+        let textVal = prompt('Add Text');
+    
+        if(textVal !==null && textVal !== ' ' && textVal.length !==0){
+      
+          let tVal = textVal;
+          let tempLeft = actObj.getCenterPoint().x;
+          let tempTop = actObj.getBoundingRect().top - 25;
+          let text = new fabric.IText(tVal, {
+            fontFamily: 'Courier New',
+            left: tempLeft,
+            top: tempTop,
+            name: 'iText',
+            fontSize: 14,
+            fill: '#000000',
+            id:actObj.id,
+            objecttype:'text',
+          
+        });
+        canvas.add(text);
+        canvas.discardActiveObject();
+        canvas.setActiveObject(actObj);
+        canvas.renderAll();
+        iLeft = actObj.left;
+        iTop=actObj.top;
+        console.log(iLeft,iTop);
+        }
+        else{
+          alert('please type somthing and retry')
+        }
+     
+      } 
+    }
+    else{
+      alert('Please select the object first and try again');
+    }
+  }
   return (
     <>
       <div className="mainBody">
@@ -372,12 +475,13 @@ const Canvas = () => {
             addCircle={addCircle}
             addRect={addRect}
             draw={toggleMode}
-            addTxt={AddText}
+
             customImg={customImage}
           />
         </div>
         <div>
           <CanvasSection
+            addText = {addText}
             clearHistory={clearHistory}
             clear={clear}
             delete={deleteObject}

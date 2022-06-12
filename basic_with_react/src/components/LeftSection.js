@@ -49,7 +49,7 @@ const LeftSection = (props) => {
         <Button onClick={addPoly}>Add Polygon</Button>
         <Button onClick={addLine}>Add Line</Button>
         <br/>
-        <Button onClick={addText}>Add Text</Button>
+        {/* <Button onClick={addText}>Add Text</Button> */}
         <h4>Load Image</h4>
         <input type="file" onChange={customImg} accept="image/*" />
       </div>
