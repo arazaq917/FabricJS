@@ -13,7 +13,8 @@ console.log("Hello");
 //     canvas.renderAll();
 //   }
 // );
-
+ var widthInput = document.getElementById('widthInput');
+      var heightInput = document.getElementById('heightInput');
 const toggleMode = (mode) => {
   if (mode === modes.pan) {
     if (currentMode === modes.pan) {
@@ -75,7 +76,14 @@ const setPanEvents = (canvas) => {
       canvas.renderAll();
     }
   });
-
+  canvas.on("object:scaling", (event) => {
+    console.log("corsshair");
+    let obj = canvas.getActiveObject()
+    let width = obj.getScaledWidth()
+    let height = obj.getScaledHeight()
+    console.log("width",width,"height",height);
+    canvas.renderAll();
+  });
   canvas.on("mouse:up", (event) => {
     mousePressed = false;
     canvas.setCursor("default");
@@ -105,11 +113,11 @@ const createRect = (canvas) => {
   console.log("ist wroking Rect");
   const rect = new fabric.Rect({
     width: 100,
-    height: 100,
+    height: 200,
     fill: "green",
     top: cntr.top,
     left: cntr.left,
-    cornerColor:'white'
+    cornerColor: "white",
   });
   canvas.add(rect);
   canvas.renderAll();
@@ -124,8 +132,7 @@ const createCirc = (canvas) => {
     fill: color,
     top: cntr.top,
     left: cntr.left,
-    cornerColor:'white'
-
+    cornerColor: "white",
   });
   canvas.add(cir);
   canvas.renderAll();

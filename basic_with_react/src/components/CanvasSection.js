@@ -4,6 +4,7 @@ import "./CanvasSection.css";
 
 const CanvasSection = (props) => {
   const clear = () => {
+    clearHis()
     props.clear();
   };
   const clearHis = () => {
@@ -12,11 +13,17 @@ const CanvasSection = (props) => {
   const deleteObj = () => {
     props.delete();
   };
-  const savecanvas = () => {
+  const saveCanvas = () => {
     props.save();
   };
-  const restore = () => {
-    props.restore();
+  const zoomInCanvas = () => {
+    props.zoomInCanvas();
+  };
+  const zoomOutCanvas = () => {
+    props.zoomOutCanvas();
+  }
+  const onChange = () => {
+    props.onChange();
   };
   return (
     <div className="canvasSection">
@@ -26,11 +33,11 @@ const CanvasSection = (props) => {
       <div className="clear">
         <Button onClick={deleteObj}>Delete</Button>
         <Button onClick={clear}>Clear</Button>
-        <Button onClick={restore}>Restore</Button>
-        <Button onClick={clearHis}>Clear Hostory</Button>
-        <Button onClick={savecanvas}>Download</Button>
+        <Button onClick={saveCanvas}>Download</Button>
+        <Button onClick={zoomInCanvas}>Zoom In</Button>
+        <Button onClick={zoomOutCanvas}>Zoom Out</Button>
+        <Button onClick={onChange}>opct</Button>
 
-        {/* <button onClick={saveData}>SaveAsJSON</button> */}
       </div>
       <div className="canvas">
         <canvas id="canvas"></canvas>

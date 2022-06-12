@@ -11,9 +11,19 @@
 
 <body>
     <div class="navbar">
-        <button onclick='toggleMode(modes.pan)'>Toggle Pan</button>
+        <div id="controls">
+            <div style="float: left; padding: 10px">
+              Width:
+              <input type="number" id="widthInput"/>
+            </div>
+            <div style="float: left; padding: 10px">
+              Height:
+              <input type="number" id="heightInput" />
+            </div>
+          </div>
+        <!-- <button onclick='toggleMode(modes.pan)'>Toggle Pan</button>
         <button onclick='toggleMode(modes.drawing)'>Toggle Drawing</button>
-        <input id="colorPicker" value="#000000" data-jscolor="{}">
+        <input id="colorPicker" value="#000000" data-jscolor="{}"> -->
         <button onclick='clearCanvas(canvas)'>Clear</button>
     </div>
     <div class="shapes">

@@ -93,12 +93,14 @@
 // };
 
 // export default RandomCode;
-import { useState } from "react";
-function Toggle() {
-  const [isToggleOn, setIsToggle] = useState(true);
-  function handleClick() {
-    setIsToggle((prevCheck) => !prevCheck);
-  }
-  return <button onClick={handleClick}>{isToggleOn ? "ON" : "OFF"}</button>;
-}
-export default Toggle;
+// import { useState } from "react";
+// function Toggle() {
+//   const [isToggleOn, setIsToggle] = useState(true);
+//   function handleClick() {
+//     setIsToggle((prevCheck) => !prevCheck);
+//   }
+//   return <button onClick={handleClick}>{isToggleOn ? "ON" : "OFF"}</button>;
+// }
+// export default Toggle;
+
+

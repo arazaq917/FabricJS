@@ -9,6 +9,12 @@ const LeftSection = (props) => {
   const addRect = () => {
     props.addRect();
   };
+  const addPoly = () => {
+    props.addPoly();
+  };
+  const addLine = () => {
+    props.addLine();
+  };
   const drawing = () => {
     props.draw("drawing");
   };
@@ -40,13 +46,11 @@ const LeftSection = (props) => {
         <h4>Shapes</h4>
         <Button onClick={addCir}>Add Circle</Button>
         <Button onClick={addRect}>Add Rect</Button>
-        <h4>Text</h4>
+        <Button onClick={addPoly}>Add Polygon</Button>
+        <Button onClick={addLine}>Add Line</Button>
+        <br/>
         <Button onClick={addText}>Add Text</Button>
-        <Button onClick={addTextbox}>Add Textbox</Button>
-        <h4>Image from URL</h4>
-        <Button onClick={addImage}>Add Image</Button>
-        <Button onClick={svgImage}>Add SVG</Button>
-        <h4>Custom Image</h4>
+        <h4>Load Image</h4>
         <input type="file" onChange={customImg} accept="image/*" />
       </div>
     </div>

@@ -1,4 +1,5 @@
 .right {
+  overflow:auto;
   box-sizing: border-box;
   float: right;
   background-color: rgb(198, 199, 197);
@@ -36,12 +37,12 @@ input[type="text"] {
 .filter:hover {
   background: #741188;
 }
-/* 
+
 .filter:focus {
   outline: none;
   border-color: #000000;
   background: #a892af;
-} */
+}
 
 .active {
   outline: none;

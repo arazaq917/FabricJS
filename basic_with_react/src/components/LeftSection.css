@@ -4,10 +4,58 @@
   width: 23%;
   height: 100vh;
 }
-.header{
+.header {
   display: flex;
   justify-content: center;
 }
-.container{
+.container {
   margin-left: 10px;
+}
+
+@import url(https://fonts.googleapis.com/css?family=Droid+Sans:regular,bold);
+
+/* Linear ------------------------- */
+
+.metal{
+  font: 62.5%/1 "Droid Sans", "Lucida Sans Unicode", "Lucida Grande", Verdana,
+  Arial, Helvetica, sans-serif;
+  width: 85px;
+  font-size: 1rem;
+  border-radius: 0.3em;
+  height: 30px;
+  background-image: -webkit-repeating-linear-gradient(
+      left,
+      hsla(0, 0%, 100%, 0) 0%,
+      hsla(0, 0%, 100%, 0) 6%,
+      hsla(0, 0%, 100%, 0.1) 7.5%
+    ),
+    -webkit-repeating-linear-gradient(left, hsla(0, 0%, 0%, 0) 0%, hsla(
+            0,
+            0%,
+            0%,
+            0
+          )
+          4%, hsla(0, 0%, 0%, 0.03) 4.5%),
+    -webkit-repeating-linear-gradient(left, hsla(0, 0%, 100%, 0) 0%, hsla(
+            0,
+            0%,
+            100%,
+            0
+          )
+          1.2%, hsla(0, 0%, 100%, 0.15) 2.2%),
+    linear-gradient(
+      180deg,
+      hsl(0, 0%, 78%) 0%,
+      hsl(0, 0%, 90%) 47%,
+      hsl(0, 0%, 78%) 53%,
+      hsl(0, 0%, 70%) 100%
+    );
+}
+
+/* active ------------------------- */
+
+.metal:hover {
+  color: hsl(210, 100%, 40%);
+  text-shadow: hsla(210, 100%, 20%, 0.3) 0 -1px 0, hsl(210, 100%, 85%) 0 2px 1px,
+    hsla(200, 100%, 80%, 1) 0 0 5px, hsla(210, 100%, 50%, 0.6) 0 0 20px;
 }
