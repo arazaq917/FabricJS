@@ -13,7 +13,7 @@ const Canvas = () => {
   const [text, setText] = useState("");
   const [svgColor, setSvgColor] = useState([]);
   const [objArr, setObjArr] = useState([]);
-  let iLeft =0,  iTop = 0, tempCanvas;
+  let iLeft =0,  iTop = 0, tempCanvas , tempWidth, tempHeight;
 
   // const dispatch = useDispatch();
   // const canvas = useSelector((state) => state.canvas);
@@ -31,7 +31,9 @@ const Canvas = () => {
       'object:moving' :movingObject,
       'selection:created':selectionCreated,
       'selection:updated':selectionUpdated,
-      'object:moved' : movedObject
+      'object:moved' : movedObject,
+      'object:scaling':objectScaling,
+      'object:resizing':objectScaling
     }
       
         
@@ -40,6 +42,28 @@ const Canvas = () => {
   }, []);
 
   // Canva events 
+  const objectScaling = (e)=>{
+    let tempObjs = tempCanvas._objects;
+    let itex = tempObjs.find(f=>f.name === 'iText' && f.id === e.target.id);
+    let itexH = tempObjs.find(f=>f.name === 'iTextH' && f.id === e.target.id);
+    console.log(e.target.getScaledWidth())
+    console.log('scaling',e.transform.ex);
+    console.log(e);
+    let tW = e.target.getScaledWidth();
+    let tH = e.target.getScaledHeight();
+    itex.top = ((e.target.getScaledHeight())+e.target.top)+4
+    itex.left = e.target.left;
+    itexH.left = e.target.left-40;
+    itexH.top=  (e.target.top+(e.target.getScaledHeight()/2))+4;
+    if(e.target.name === 'rect'){
+  
+      if(itex && itexH){
+        itex.text = `${tW.toFixed(2)}`;
+        itexH.text = `${tH.toFixed(2)}`;
+        tempCanvas.renderAll();
+      }
+    }
+  }
   const movingObject = (e)=>{
     console.log('objects moving');
     let actObj = e.target;
@@ -47,23 +71,34 @@ const Canvas = () => {
     console.log(iLeft,iTop);
   
     let tObj = tempObjs.findIndex(f=>f.name === 'iText' && f.id === actObj.id);
+    let tObjH = tempObjs.findIndex(f=>f.name === 'iTextH' && f.id === actObj.id);
     if(tObj>-1){
+      tempObjs[tObj].top = ((e.target.getScaledHeight())+e.target.top)+4;
+      tempObjs[tObj].left = e.target.left;
+      tempObjs[tObjH].top = (e.target.top+(e.target.getScaledHeight()/2))+4;
+      tempObjs[tObjH].left = e.target.left-40;
 
-       let tempDiff = {left:actObj.left-iLeft, top:actObj.top-iTop};
-       debugger
-       console.log(tempDiff)
-       tempObjs[tObj].left = tempObjs[tObj].left+tempDiff.left;
-       tempObjs[tObj].top = tempObjs[tObj].top+tempDiff.top;
-       iLeft = actObj.left;
-       iTop = actObj.top;
-       tempCanvas.renderAll();
+
+      //  let tempDiff = {left:actObj.left-iLeft, top:actObj.top-iTop};
+  
+      //  console.log(tempDiff)
+      //  tempObjs[tObj].left = tempObjs[tObj].left+tempDiff.left;
+      //  tempObjs[tObj].top = tempObjs[tObj].top+tempDiff.top;
+      //  iLeft = actObj.left;
+      //  iTop = actObj.top;
+      //  tempCanvas.renderAll();
+
+
     }
   }
   const selectionCreated = (e)=>{
     console.log('selectionCreated');
+    
     if(e.selected.length == 1){
       iLeft = e.selected[0].left;
       iTop = e.selected[0].top;
+      tempWidth = e.selected[0].getScaledWidth();
+      tempHeight = e.selected[0].getScaledHeight();
     }
     console.log(iLeft,iTop);
    
@@ -74,6 +109,8 @@ const Canvas = () => {
     if(e.selected.length == 1){
       iLeft = e.selected[0].left;
       iTop = e.selected[0].top;
+      tempWidth = e.selected[0].width;
+      tempHeight = e.selected[0].height;
     }
   }
   const movedObject = ()=>{
@@ -179,24 +216,57 @@ const Canvas = () => {
     canvas.renderAll();
   };
   const addRect = () => {
+    let w =100;
+    let h = 150;
     let rect = new fabric.Rect({
-      width: 100,
-      height: 150,
+      width: w,
+      height: h,
       left: 200,
       top: 250,
       fill: "rgba(255,0,0,0.5)",
       borderColor: "red",
+      name:'rect',
       strokeWidth: 3,
       stroke: "#880E4F",
       cornerColor: "white",
       transparentCorners: false,
       id: Date().toString(),
     });
+
     setObjArr([...objArr, rect]);
     canvas.add(rect);
     canvas.setActiveObject(rect);
     canvas.centerObject(rect);
     canvas.isDrawingMode = false;
+        let txt = new fabric.IText(`${w}`, {
+      fontFamily: 'Courier New',
+      left:rect.left,
+      top: ((rect.height)+rect.top)+4,
+      name: 'iText',
+      fontSize: 14,
+      fill: '#000000',
+      id:rect.id,
+      objecttype:'text',
+    
+  });
+  canvas.add(txt);
+  let txtH = new fabric.IText(`${h}`, {
+    fontFamily: 'Courier New',
+    // left:rect.left-rect.width/2,
+    left:rect.left-40,
+    top:  (rect.top+(rect.height/2))+4,
+    name: 'iTextH',
+    fontSize: 14,
+    fill: '#000000',
+    id:rect.id,
+    objecttype:'text',
+    angle:-90
+  
+});
+canvas.add(txtH);
+  setObjArr = [...objArr,text]
+  canvas.discardActiveObject();
+  canvas.setActiveObject(rect);
     canvas.renderAll();
   };
   const addPoly = () => {
