@@ -1,11 +1,8 @@
 import React, { useState } from "react";
 import Button from "../UI/Button";
-import ToggleGroup from "./randomCode";
 import "./RightSection.css";
 
 const RightSection = (props) => {
-  const types = ["sepia", "brownie", "vintage"];
-  const [active, setActive] = useState(types[0]);
   const colorPicker = (e) => {
     props.color(e.target.value);
   };

@@ -35,8 +35,6 @@ const Canvas = () => {
       'object:scaling':objectScaling,
       'object:resizing':objectScaling
     }
-      
-        
   )
   }, []);
 
@@ -86,22 +84,17 @@ const Canvas = () => {
       //  iLeft = actObj.left;
       //  iTop = actObj.top;
       //  tempCanvas.renderAll();
-
-
     }
   }
   const selectionCreated = (e)=>{
     console.log('selectionCreated');
-    
     if(e.selected.length == 1){
       iLeft = e.selected[0].left;
       iTop = e.selected[0].top;
       tempWidth = e.selected[0].getScaledWidth();
       tempHeight = e.selected[0].getScaledHeight();
     }
-    console.log(iLeft,iTop);
-   
-
+    // console.log(iLeft,iTop);
   }
   const selectionUpdated = (e)=>{
     console.log('selection Updated');
@@ -115,22 +108,14 @@ const Canvas = () => {
   const movedObject = ()=>{
     console.log('object moved');
   }
-
   // Canvas Function
   window.canvas = canvas;
-
-  let deleteIcon = "data:image/svg+xml,%3C%3Fxml version='1.0' encoding='utf-8'%3F%3E%3C!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 1.1//EN' 'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'%3E%3Csvg version='1.1' id='Ebene_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' width='595.275px' height='595.275px' viewBox='200 215 230 470' xml:space='preserve'%3E%3Ccircle style='fill:%23F44336;' cx='299.76' cy='439.067' r='218.516'/%3E%3Cg%3E%3Crect x='267.162' y='307.978' transform='matrix(0.7071 -0.7071 0.7071 0.7071 -222.6202 340.6915)' style='fill:white;' width='65.545' height='262.18'/%3E%3Crect x='266.988' y='308.153' transform='matrix(0.7071 0.7071 -0.7071 0.7071 398.3889 -83.3116)' style='fill:white;' width='65.544' height='262.179'/%3E%3C/g%3E%3C/svg%3E";
-
-  let img = document.createElement('img');
-  img.src = deleteIcon;
 
   fabric.Object.prototype.transparentCorners = false;
   fabric.Object.prototype.cornerColor = 'blue';
   fabric.Object.prototype.cornerStyle = 'circle';
 
-
   let color = "#000000";
-
   const clear = () => {
     addNewState();
     canvas.getObjects().forEach((obj) => {
@@ -167,12 +152,12 @@ const Canvas = () => {
       rect.setControlsVisibility({
           mtr: false,
       });
-    setObjArr([...objArr, rect]);
-    canvas.add(rect);
-    canvas.setActiveObject(rect);
-    canvas.centerObject(rect);
-    canvas.isDrawingMode = false;
-        let txt = new fabric.IText(`${w}`, {
+      setObjArr([...objArr, rect]);
+      canvas.add(rect);
+      canvas.setActiveObject(rect);
+      canvas.centerObject(rect);
+      canvas.isDrawingMode = false;
+      let txt = new fabric.IText(`${w}`, {
       fontFamily: 'Courier New',
       left:rect.left,
       top: ((rect.height)+rect.top)+4,
@@ -183,8 +168,8 @@ const Canvas = () => {
       objecttype:'text',
     
   });
-  canvas.add(txt);
-  let txtH = new fabric.IText(`${h}`, {
+    canvas.add(txt);
+    let txtH = new fabric.IText(`${h}`, {
     fontFamily: 'Courier New',
     // left:rect.left-rect.width/2,
     left:rect.left-40,
@@ -197,9 +182,9 @@ const Canvas = () => {
     angle:-90
   
 });
-canvas.add(txtH);
-  canvas.discardActiveObject();
-  canvas.setActiveObject(rect);
+    canvas.add(txtH);
+    canvas.discardActiveObject();
+    canvas.setActiveObject(rect);
     canvas.renderAll();
   };
 
@@ -258,9 +243,7 @@ canvas.add(txtH);
       let cText = canvas._objects.findIndex(f=>f.name === 'iText' && f.id === actObj.id);
       if(cText == -1){
         let textVal = prompt('Add Text');
-    
         if(textVal !==null && textVal !== ' ' && textVal.length !==0){
-      
           let tVal = textVal;
           let tempLeft = actObj.getCenterPoint().x;
           let tempTop = actObj.getBoundingRect().top - 25;
@@ -273,7 +256,6 @@ canvas.add(txtH);
             fill: '#000000',
             id:actObj.id,
             objecttype:'text',
-          
         });
         canvas.add(text);
         canvas.discardActiveObject();
@@ -286,7 +268,6 @@ canvas.add(txtH);
         else{
           alert('please type something and retry')
         }
-     
       } 
     }
     else{

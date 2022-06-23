@@ -15,8 +15,6 @@ const LeftSection = (props) => {
       <div className="container">
         <h4>Shapes</h4>
         <Button onClick={addRect}>Add Rect</Button>
-        <br/>
-        {/* <Button onClick={addText}>Add Text</Button> */}
       </div>
     </div>
   );

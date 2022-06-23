@@ -16,13 +16,6 @@ const CanvasSection = (props) => {
   const saveCanvas = () => {
     props.save();
   };
-
-  const addText = () =>{
-    props.addText()
-  }
-  const onChange = () => {
-    props.onChange();
-  };
   return (
     <div className="canvasSection">
       <div className="header">
@@ -32,8 +25,6 @@ const CanvasSection = (props) => {
         <Button onClick={deleteObj}>Delete</Button>
         <Button onClick={clear}>Clear</Button>
         <Button onClick={saveCanvas}>Download</Button>
-        <Button onClick={addText}>Add Text </Button>
-
       </div>
       <div className="canvas">
         <canvas id="canvas"></canvas>
