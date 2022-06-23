@@ -16,12 +16,7 @@ const CanvasSection = (props) => {
   const saveCanvas = () => {
     props.save();
   };
-  const zoomInCanvas = () => {
-    props.zoomInCanvas();
-  };
-  const zoomOutCanvas = () => {
-    props.zoomOutCanvas();
-  }
+
   const addText = () =>{
     props.addText()
   }
@@ -37,9 +32,6 @@ const CanvasSection = (props) => {
         <Button onClick={deleteObj}>Delete</Button>
         <Button onClick={clear}>Clear</Button>
         <Button onClick={saveCanvas}>Download</Button>
-        <Button onClick={zoomInCanvas}>Zoom In</Button>
-        <Button onClick={zoomOutCanvas}>Zoom Out</Button>
-        <Button onClick={onChange}>Group</Button>
         <Button onClick={addText}>Add Text </Button>
 
       </div>

@@ -10,12 +10,6 @@ const RightSection = (props) => {
     props.color(e.target.value);
   };
 
-  const newText = (txt) => {
-    props.newTxt(txt.target.value);
-  };
-  const showHistory = (id) => {
-    props.loadObj(id);
-  };
   const undoCanvas = () => {
     props.undo();
   };
@@ -39,26 +33,6 @@ const RightSection = (props) => {
             <Button onClick={redoCanvas}>Redo</Button>
           </div>
         )}
-        {props.text && (
-          <div>
-            <br />
-            <br />
-            <span>Change Text</span>
-            <input type="text" value={props.text} onChange={newText} />
-          </div>
-        )}
-        {props.arr.map((c, index) => (
-          <div key={index}>
-            <br />
-            <br />
-            <div
-              style={{ cursor: "pointer" }}
-              onClick={() => showHistory(props.arr[index].id)}
-            >
-              {`${props.arr[index].type}`}
-            </div>
-          </div>
-        ))}
       </div>
     </div>
   );
