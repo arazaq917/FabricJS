@@ -12,6 +12,18 @@
   margin-left: 10px;
 }
 
+.as-type{
+    display: flex;
+    width: 110px;
+    height: 110px;
+    background: #F7F7FA;
+    border: 1px solid #0044F1;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+}
+
 @import url(https://fonts.googleapis.com/css?family=Droid+Sans:regular,bold);
 
 /* Linear ------------------------- */
