@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/FabricJS/static/css/main.a632a022.css",
+    "main.js": "/FabricJS/static/js/main.6ed10c4f.js",
+    "index.html": "/FabricJS/index.html",
+    "main.a632a022.css.map": "/FabricJS/static/css/main.a632a022.css.map",
+    "main.6ed10c4f.js.map": "/FabricJS/static/js/main.6ed10c4f.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.a632a022.css",
+    "static/js/main.6ed10c4f.js"
+  ]
+}
