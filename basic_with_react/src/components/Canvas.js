@@ -351,10 +351,10 @@ const Canvas = () => {
     }
   }
   const movingObject = (e)=>{
-    console.log('objects moving');
+    // console.log('objects moving');
     let actObj = e.target;
     let tempObjs = tempCanvas._objects;
-    console.log(iLeft,iTop);
+    // console.log(iLeft,iTop);
   
     let tObj = tempObjs.findIndex(f=>f.name === 'iText' && f.id === actObj.id);
     let tObjH = tempObjs.findIndex(f=>f.name === 'iTextH' && f.id === actObj.id);
@@ -376,7 +376,7 @@ const Canvas = () => {
     }
   }
   const selectionCreated = (e)=>{
-    console.log('selectionCreated');
+    // console.log('selectionCreated');
     if(e.selected.length == 1){
       iLeft = e.selected[0].left;
       iTop = e.selected[0].top;
@@ -386,7 +386,7 @@ const Canvas = () => {
     // console.log(iLeft,iTop);
   }
   const selectionUpdated = (e)=>{
-    console.log('selection Updated');
+    // console.log('selection Updated');
     if(e.selected.length == 1){
       iLeft = e.selected[0].left;
       iTop = e.selected[0].top;
@@ -395,7 +395,7 @@ const Canvas = () => {
     }
   }
   const movedObject = ()=>{
-    console.log('object moved');
+    // console.log('object moved');
   }
   // Canvas Function
   window.canvas = canvas;
@@ -502,7 +502,7 @@ const Canvas = () => {
   const saveCanvas = () => {
     const img = canvas.toDataURL();
     let link = document.createElement("a");
-    console.log("link", link);
+    // console.log("link", link);
     link.download = "canvas.png";
     link.href = img;
     link.click();
@@ -525,7 +525,7 @@ const Canvas = () => {
   const addText = ()=>{
    
     let actObj = canvas.getActiveObject();
-    console.log('text ');
+    // console.log('text ');
    
     if(actObj ){
       let cText = canvas._objects.findIndex(f=>f.name === 'iText' && f.id === actObj.id);
@@ -551,7 +551,7 @@ const Canvas = () => {
         canvas.renderAll();
         iLeft = actObj.left;
         iTop=actObj.top;
-        console.log(iLeft,iTop);
+        // console.log(iLeft,iTop);
         }
         else{
           alert('please type something and retry')
