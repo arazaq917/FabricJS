@@ -12,9 +12,12 @@ const LeftSection = (props) => {
       <div className="header">
         <h2>Left Section</h2>
       </div>
-      <div className="container">
+      <div className="container" style={{margin:'0px 60px'}}>
         <h4>Shapes</h4>
-        <Button onClick={addRect}>Add Rect</Button>
+          <div style={{display:'flex',flexDirection:'column'}}>
+              <Button onClick={addRect}>Add Windows</Button>
+              <Button onClick={props.addTopWindow}>Top Window</Button>
+          </div>
       </div>
     </div>
   );

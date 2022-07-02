@@ -349,6 +349,11 @@ const Canvas = () => {
     let rightSideInd = -1;
     let leftSideInd = -1;
 
+    if (rect.side === 'top'){
+      setTopWindowDimensions(rect)
+      return;
+    }
+
     if (rect.side === "left"){
       leftSide = rect;
       rightSideInd = tempObjs.findIndex(o=>o.name === "rect" && o.side === "right")
@@ -442,6 +447,63 @@ const Canvas = () => {
       if (rect.side === "left") fullLineText.text = `${Math.trunc(rightSide.getScaledWidth() + rect.getScaledWidth())}`;
       else fullLineText.text = `${Math.trunc(leftSide.getScaledWidth() + rect.getScaledWidth())}`;
     }
+    tempCanvas.requestRenderAll();
+  }
+  const setTopWindowDimensions =(rect)=>{
+    if (!rect) return;
+    let tempObjs = tempCanvas._objects;
+
+    let bottomTextInd = tempObjs.findIndex(f=>f.name === 'topText' && f.id === rect.id);
+    let leftTextInd = tempObjs.findIndex(f=>f.name === 'iTextH' && f.id === rect.id);
+    let bottomLeftLineInd = tempObjs.findIndex(f=>f.name === 'bottom_left_line' && f.id === rect.id);
+    let bottomRightLineInd = tempObjs.findIndex(f=>f.name === 'bottom_right_line' && f.id === rect.id);
+    let leftTopLineInd = tempObjs.findIndex(f=>f.name === 'left_top_line' && f.id === rect.id);
+    let leftBottomLineInd = tempObjs.findIndex(f=>f.name === 'left_bottom_line' && f.id === rect.id);
+
+    let bottomRightDashedLineInd = tempObjs.findIndex(f=>f.name === 'bottom_right_dashed_line' && f.id === rect.id);
+    let leftNodeDashInd = tempObjs.findIndex(f=>f.name === 'leftNodeDash' && f.id === rect.id);
+    let rightNodeDashInd = tempObjs.findIndex(f=>f.name === 'rightNodeDasn' && f.id === rect.id);
+
+    if (bottomTextInd === -1 || leftTextInd === -1 || bottomLeftLineInd === -1 || bottomRightLineInd === -1|| leftTopLineInd === -1|| leftBottomLineInd === -1 || bottomRightDashedLineInd === -1 || leftNodeDashInd === -1 || rightNodeDashInd === -1) return;;
+    let topText = tempObjs[bottomTextInd];
+    let leftText = tempObjs[leftTextInd];
+    let bottomLeftLine = tempObjs[bottomLeftLineInd];
+    let bottomRightLine = tempObjs[bottomRightLineInd];
+    let leftTopLine = tempObjs[leftTopLineInd];
+    let leftBottomLine = tempObjs[leftBottomLineInd];
+    let bottomRightDashedLine = tempObjs[bottomRightDashedLineInd];
+    let leftNodeDash = tempObjs[leftNodeDashInd];
+    let rightNodeDash = tempObjs[rightNodeDashInd];
+
+    let objScaledWidth = rect.getScaledWidth();
+    let objScaledHeight = rect.getScaledHeight();
+    const bottomOffset = 10;
+    const leftOffset = 20;
+    topText.set('top', rect.top - topText.getScaledWidth()/2 - bottomOffset);
+    topText.set('left', rect.left + (objScaledWidth/2) - (topText.getScaledWidth()/2));
+
+    leftText.left = rect.left - leftOffset;
+    leftText.top = rect.top + (rect.getScaledHeight()/2);
+
+    bottomLeftLine.left = rect.left;
+    bottomLeftLine.top = topText.top + topText.getScaledHeight()/4;
+
+    bottomRightLine.top = topText.top + topText.getScaledHeight()/4;
+    bottomRightLine.left = topText.left + topText.getScaledWidth() + (topText.getScaledWidth() * 0.1);
+
+    bottomRightDashedLine.left = rect.left;
+    bottomRightDashedLine.top  =  topText.top - (topText.getScaledHeight()/4.8);
+
+    leftNodeDash.left = rect.left-1;
+    leftNodeDash.top = rightNodeDash.top =  topText.top - (topText.getScaledHeight()/2);
+
+    rightNodeDash.left = rect.left + objScaledWidth;
+
+    leftTopLine.left = leftText.left - 5;
+    leftTopLine.top = rect.top;
+    leftBottomLine.left  = leftText.left - 5;
+    leftBottomLine.top = leftText.top + (leftText.getScaledWidth()/2);
+
     tempCanvas.requestRenderAll();
   }
   const setObjectDimensions1 =(rect)=>{
@@ -635,15 +697,158 @@ const Canvas = () => {
       }
     }
   }
+  const setTopWindowPosition =(rect)=>{
+    if (!rect) return;
+    let tempObjs = tempCanvas._objects;
 
+    let bottomTextInd = tempObjs.findIndex(f=>f.name === 'topText' && f.id === rect.id);
+    let leftTextInd = tempObjs.findIndex(f=>f.name === 'iTextH' && f.id === rect.id);
+    let bottomLeftLineInd = tempObjs.findIndex(f=>f.name === 'bottom_left_line' && f.id === rect.id);
+    let bottomRightLineInd = tempObjs.findIndex(f=>f.name === 'bottom_right_line' && f.id === rect.id);
+    let leftTopLineInd = tempObjs.findIndex(f=>f.name === 'left_top_line' && f.id === rect.id);
+    let leftBottomLineInd = tempObjs.findIndex(f=>f.name === 'left_bottom_line' && f.id === rect.id);
+
+    let bottomRightDashedLineInd = tempObjs.findIndex(f=>f.name === 'bottom_right_dashed_line' && f.id === rect.id);
+    let leftNodeDashInd = tempObjs.findIndex(f=>f.name === 'leftNodeDash' && f.id === rect.id);
+    let rightNodeDashInd = tempObjs.findIndex(f=>f.name === 'rightNodeDasn' && f.id === rect.id);
+
+
+    if (bottomTextInd === -1 || leftTextInd === -1 || bottomLeftLineInd === -1 || bottomRightLineInd === -1|| leftTopLineInd === -1|| leftBottomLineInd === -1 || bottomRightDashedLineInd === -1 || leftNodeDashInd === -1 || rightNodeDashInd === -1) return;;
+    let topText = tempObjs[bottomTextInd];
+    let leftText = tempObjs[leftTextInd];
+    let bottomLeftLine = tempObjs[bottomLeftLineInd];
+    let bottomRightLine = tempObjs[bottomRightLineInd];
+    let leftTopLine = tempObjs[leftTopLineInd];
+    let leftBottomLine = tempObjs[leftBottomLineInd];
+    let bottomRightDashedLine = tempObjs[bottomRightDashedLineInd];
+    let leftNodeDash = tempObjs[leftNodeDashInd];
+    let rightNodeDash = tempObjs[rightNodeDashInd];
+
+    let objScaledWidth = rect.getScaledWidth();
+    let objScaledHeight = rect.getScaledHeight();
+    const bottomOffset = 10;
+    const leftOffset = 20;
+    topText.set('top', rect.top - topText.getScaledWidth()/2 - bottomOffset);
+    topText.set('left', rect.left + (rect.getScaledWidth()/2) - (topText.getScaledWidth()/2));
+
+    leftText.set('left', rect.left - leftOffset);
+    leftText.set('top', rect.top + (rect.getScaledHeight()/2));
+
+    //ADJUST LINES
+
+    let bottomLeftPath =  reInitPath([
+      ['M', rect.left, topText.top + topText.getScaledHeight()/2],
+      ['l', (rect.getScaledWidth()/2) - (topText.getScaledWidth()/2) - (topText.getScaledWidth() * 0.1), 0],
+      ['M',rect.left, topText.top + (topText.getScaledHeight()/4)],
+      ['l',0, topText.getScaledHeight()/2 ]
+    ],{
+      stroke : bottomLeftLine.stroke,
+      strokeWidth : bottomLeftLine.strokeWidth,
+      fill : bottomLeftLine.fill,
+      hasBorders : bottomLeftLine.hasBorders,
+      id : bottomLeftLine.id,
+      hasControls : bottomLeftLine.hasControls,
+      name : bottomLeftLine.name},bottomLeftLine);
+
+    let bottomRightPath =  reInitPath([
+      ['M', topText.left + topText.getScaledWidth() + (topText.getScaledWidth() * 0.1), topText.top + topText.getScaledHeight()/2],
+      ['l', (rect.getScaledWidth()/2) - (topText.getScaledWidth()/2) - (topText.getScaledWidth() * 0.1), 0],
+      ['M',rect.left + rect.getScaledWidth(), topText.top + (topText.getScaledHeight()/4)],
+      ['l',0, topText.getScaledHeight()/2 ]
+    ],{
+      stroke : bottomRightLine.stroke,
+      strokeWidth : bottomRightLine.strokeWidth,
+      fill : bottomRightLine.fill,
+      hasBorders : bottomRightLine.hasBorders,
+      id : bottomRightLine.id,
+      hasControls : bottomRightLine.hasControls,
+      name : bottomRightLine.name},bottomRightLine);
+
+    let leftTopPath =  reInitPath([
+      ['M', leftText.left, rect.top],
+      ['l', 0, (rect.getScaledHeight()/2) - (leftText.getScaledWidth()/2) -(leftText.getScaledWidth() * 0.1)],
+      ['M',leftText.left - (leftText.getScaledHeight()/4), rect.top],
+      ['l',leftText.getScaledHeight()/2, 0 ]
+    ],{
+      stroke : leftTopLine.stroke,
+      strokeWidth : leftTopLine.strokeWidth,
+      fill : leftTopLine.fill,
+      hasBorders : leftTopLine.hasBorders,
+      id : leftTopLine.id,
+      hasControls : leftTopLine.hasControls,
+      name : leftTopLine.name},leftTopLine);
+
+    let leftBottomPath =  reInitPath([
+      ['M', leftText.left, rect.top + rect.getScaledHeight()],
+      ['l', 0, - ((rect.getScaledHeight()/2) - (leftText.getScaledWidth()/2) - (leftText.getScaledWidth() * 0.1)) ],
+      ['M',leftText.left - (leftText.getScaledHeight()/4), rect.top + rect.getScaledHeight()],
+      ['l',leftText.getScaledHeight()/2, 0 ]
+    ],{
+      stroke : leftBottomLine.stroke,
+      strokeWidth : leftBottomLine.strokeWidth,
+      fill : leftBottomLine.fill,
+      hasBorders : leftBottomLine.hasBorders,
+      id : leftBottomLine.id,
+      hasControls : leftBottomLine.hasControls,
+      name : leftBottomLine.name},leftBottomLine);
+
+    let bottomRightDashedPath =  reInitPath([
+      ['M', rect.left, topText.top - (topText.getScaledHeight()/4.8)],
+      ['l', rect.getScaledWidth(), 0],
+    ],{
+      stroke : bottomRightDashedLine.stroke,
+      strokeWidth : bottomRightDashedLine.strokeWidth,
+      fill : bottomRightDashedLine.fill,
+      hasBorders : bottomRightDashedLine.hasBorders,
+      id : bottomRightDashedLine.id,
+      hasControls : bottomRightDashedLine.hasControls,
+      name : bottomRightDashedLine.name},bottomRightDashedLine);
+    bottomRightDashedPath.set({ strokeDashArray: [5, 5] })
+
+    let leftNodeDashPath =  reInitPath([
+      ['M', rect.left, topText.top - topText.getScaledHeight()/2],
+      ['l', 0, topText.getScaledHeight() / 2 + (topText.getScaledHeight() * 0.1)],
+    ],{
+      stroke : leftNodeDash.stroke,
+      strokeWidth : leftNodeDash.strokeWidth,
+      fill : leftNodeDash.fill,
+      hasBorders : leftNodeDash.hasBorders,
+      id : leftNodeDash.id,
+      hasControls : leftNodeDash.hasControls,
+      name : leftNodeDash.name},leftNodeDash);
+    let rightNodeDashPath =  reInitPath([
+      ['M', rect.left + rect.getScaledWidth(), topText.top - (topText.getScaledHeight()/2)],
+      ['l', 0, topText.getScaledHeight() / 2 + (topText.getScaledHeight() * 0.1)],
+    ],{
+      stroke : rightNodeDash.stroke,
+      strokeWidth : rightNodeDash.strokeWidth,
+      fill : rightNodeDash.fill,
+      hasBorders : rightNodeDash.hasBorders,
+      id : rightNodeDash.id,
+      hasControls : rightNodeDash.hasControls,
+      name : rightNodeDash.name},rightNodeDash);
+
+    tempCanvas.add(bottomLeftPath,bottomRightPath,leftTopPath,leftBottomPath,bottomRightDashedPath,leftNodeDashPath,rightNodeDashPath);
+
+    if(rect.name === 'rect'){
+      if(topText && leftText){
+        topText.text = `${Math.trunc(objScaledWidth)}`;
+        leftText.text = `${Math.trunc(objScaledHeight)}`;
+      }
+    }
+  }
   const objectRotating = (e)=>{
     if (!e.target) return;
     setObjectDimensions(e.target)
   }
   const objectScaling = (e)=>{
     if (!e.target) return;
-    setObjectDimensions1(e.target)
-    reAddCommonLine(e.target)
+    if (e.target.name === 'rect' && e.target.side==='top'){
+       setTopWindowPosition(e.target);
+    }else {
+      setObjectDimensions1(e.target);
+      reAddCommonLine(e.target);
+    }
   }
   const objectScaled = (e)=>{
     if (!e.target) return;
@@ -673,7 +878,7 @@ const Canvas = () => {
         else tempCanvas._objects[i].set({opacity: 1});
       }
     }
-    tempCanvas.renderAll();
+    tempCanvas.requestRenderAll();
   }
   const movingObject = (e)=>{
     if (!e.target) return;
@@ -703,6 +908,8 @@ const Canvas = () => {
     let rightSide;
     let rightSideInd = -1;
     let leftSideInd = -1;
+
+    if (rect.side === 'top') return;
 
     if (rect.side === "left"){
       leftSide = rect;
@@ -1189,6 +1396,236 @@ const Canvas = () => {
       top: rect.top,
     })
   };
+  const addTopWindow = () => {
+    let w =215;
+    let h = 100;
+    let left = 200;
+    let top = 100;
+    const unique_id = uuid();
+    let rect1 = new fabric.Rect({
+      width: w,
+      height: h,
+      left,
+      top,
+      fill: "#9dc2c2",
+      borderColor: "red",
+      name:'rect-box',
+      strokeWidth: 15,
+      stroke: "#4b5555",
+      cornerColor: "red",
+      // padding: 15,
+      transparentCorners: false,
+      id: unique_id,
+    });
+
+    rect1.setControlsVisibility({
+      mtr: false,
+    });
+    // setObjArr([...objArr, rect]);
+    canvas.add(rect1);
+    // canvas.setActiveObject(rect);
+    canvas.centerObject(rect1);
+    canvas.isDrawingMode = false;
+
+    let rectLines = new fabric.Path([
+      ['M', rect1.left, rect1.top],
+      ['l', rect1.getScaledHeight() * 0.09, rect1.getScaledWidth() * 0.14],
+      ['M', rect1.left + rect1.getScaledWidth(), rect1.top],
+      ['l', -rect1.getScaledHeight() * 0.09, rect1.getScaledWidth() * 0.14],
+      ['M', rect1.left, rect1.top + rect1.getScaledHeight()],
+      ['l', rect1.getScaledHeight() * 0.09, -rect1.getScaledWidth() * 0.14],
+      ['M', rect1.left + rect1.getScaledWidth(), rect1.top + rect1.getScaledHeight()],
+      ['l', -rect1.getScaledHeight() * 0.09, -rect1.getScaledWidth() * 0.14],
+
+    ], {
+      stroke: 'grey',
+      strokeWidth: 1,
+      fill: false,
+      hasBorders: false,
+      evented: false,
+      selectable: false,
+      id: unique_id,
+      hasControls: false,
+      name: "rect_internal_lines",
+    });
+    const rect = new fabric.Group([rect1,rectLines], {
+      // originX: 'center',
+      // originY: 'center',
+      left,
+      top,
+      name: "rect",
+      perPixelTargetFind: true,
+      id: unique_id,
+    });
+    rect.set('side','top')
+    rect.setControlsVisibility({
+      mtr: false,
+    });
+    canvas.remove(rect1)
+    canvas.add(rect)
+
+    canvas.setActiveObject(rect);
+    // canvas.centerObject(rect1);
+    let leftText = new fabric.IText(`${h}`, {
+      fontFamily: 'Courier New',
+      name: 'iTextH',
+      fontSize: 14,
+      fill: '#000000',
+      fontWeight: 700,
+      evented:false,
+      selectable:false,
+      originX:'center',
+      originY:'center',
+      id:unique_id,
+      objecttype:'text',
+      angle:-90
+    });
+    canvas.add(leftText);
+
+    let topText = new fabric.IText(`${w}`, {
+      fontFamily: 'Courier New',
+      name: 'topText',
+      fontSize: 14,
+      fontWeight: 700,
+      evented:false,
+      selectable:false,
+      fill: '#000000',
+      id:unique_id,
+      objecttype:'text',
+    });
+    canvas.add(topText);
+
+    const bottomOffset = 10;
+    const leftOffset = 20;
+    topText.set('top', rect.top - topText.getScaledWidth()/2 - bottomOffset);
+    topText.set('left', rect.left + (rect.getScaledWidth()/2) - (topText.getScaledWidth()/2));
+
+      leftText.set('left', rect.left - leftOffset);
+      leftText.set('top', rect.top + (rect.getScaledHeight()/2));
+
+
+
+
+    //ADDING PATHS
+    let bottomLeftLine = reInitPath([
+      ['M', rect.left, topText.top + topText.getScaledHeight()/2],
+      ['l', (rect.getScaledWidth()/2) - (topText.getScaledWidth()/2) - (topText.getScaledWidth() * 0.1), 0],
+      ['M',rect.left, topText.top + (topText.getScaledHeight()/4)],
+      ['l',0, topText.getScaledHeight()/2 ]
+    ],{
+      stroke: 'red',
+      strokeWidth: 1,
+      fill: false,
+      hasBorders: false,
+      evented:false,
+      selectable:false,
+      id:unique_id,
+      hasControls: false,
+      name: "bottom_left_line",
+    })
+
+    let bottomRightLine = reInitPath([
+      ['M', topText.left + topText.getScaledWidth() + (topText.getScaledWidth() * 0.1), topText.top + topText.getScaledHeight()/2],
+      ['l', (rect.getScaledWidth()/2) - (topText.getScaledWidth()/2) - (topText.getScaledWidth() * 0.1), 0],
+      ['M',rect.left + rect.getScaledWidth(), topText.top + (topText.getScaledHeight()/4)],
+      ['l',0, topText.getScaledHeight()/2 ]
+    ],{
+      stroke: 'red',
+      strokeWidth: 1,
+      fill: false,
+      hasBorders: false,
+      evented:false,
+      selectable:false,
+      id:unique_id,
+      hasControls: false,
+      name: "bottom_right_line",
+    })
+
+
+    let bottomRightDashedLine = reInitPath([
+      ['M', rect.left, topText.top - (topText.getScaledHeight()/4.8)],
+      ['l', rect.getScaledWidth(), 0],
+    ],{
+      stroke: 'blue',
+      strokeWidth: 1,
+      fill: false,
+      hasBorders: false,
+      evented:false,
+      selectable:false,
+      objectCaching:false,
+      id:unique_id,
+      hasControls: false,
+      name: "bottom_right_dashed_line",
+    })
+    let leftNodeDash = reInitPath([
+      ['M', rect.left, topText.top - topText.getScaledHeight()/2],
+      ['l', 0, topText.getScaledHeight() / 2 + (topText.getScaledHeight() * 0.1)],
+    ],{
+      stroke: 'blue',
+      strokeWidth: 4,
+      fill: false,
+      hasBorders: false,
+      evented:false,
+      selectable:false,
+      objectCaching:false,
+      id:unique_id,
+      hasControls: false,
+      name: "leftNodeDash",
+    })
+    let rightNodeDash = reInitPath([
+      ['M', rect.left + rect.getScaledWidth(), topText.top - (topText.getScaledHeight()/2)],
+      ['l', 0, topText.getScaledHeight() / 2 + (topText.getScaledHeight() * 0.1)],
+    ],{
+      stroke: 'blue',
+      strokeWidth: 4,
+      fill: false,
+      hasBorders: false,
+      evented:false,
+      selectable:false,
+      objectCaching:false,
+      id:unique_id,
+      hasControls: false,
+      name: "rightNodeDasn",
+    })
+    bottomRightDashedLine.set({ strokeDashArray: [5, 5] })
+
+    let leftTopLine = reInitPath([
+      ['M', leftText.left, rect.top],
+      ['l', 0, (rect.getScaledHeight()/2) - (leftText.getScaledWidth()/2) -(leftText.getScaledWidth() * 0.1)],
+      ['M',leftText.left - (leftText.getScaledHeight()/4), rect.top],
+      ['l',leftText.getScaledHeight()/2, 0 ]
+    ],{
+      stroke: 'red',
+      strokeWidth: 1,
+      fill: false,
+      hasBorders: false,
+      evented:false,
+      selectable:false,
+      id:unique_id,
+      hasControls: false,
+      name: "left_top_line",
+    })
+    let leftBottomLine = reInitPath([
+      ['M', leftText.left, rect.top + rect.getScaledHeight()],
+      ['l', 0, - ((rect.getScaledHeight()/2) - (leftText.getScaledWidth()/2) - (leftText.getScaledWidth() * 0.1)) ],
+      ['M',leftText.left - (leftText.getScaledHeight()/4), rect.top + rect.getScaledHeight()],
+      ['l',leftText.getScaledHeight()/2, 0 ]
+    ],{
+      stroke: 'red',
+      strokeWidth: 1,
+      fill: false,
+      hasBorders: false,
+      evented:false,
+      selectable:false,
+      id:unique_id,
+      hasControls: false,
+      name: "left_bottom_line",
+    })
+    canvas.add(bottomLeftLine,bottomRightLine,leftTopLine,leftBottomLine,bottomRightDashedLine,leftNodeDash,rightNodeDash)
+    canvas.discardActiveObject();
+    canvas.setActiveObject(rect);
+    canvas.renderAll();
+  };
 
   const colorPicker = (c) => {
     color = c;
@@ -1288,6 +1725,7 @@ const Canvas = () => {
           <div>
             <LeftSection
                 addRect={addRect}
+                addTopWindow ={addTopWindow}
             />
           </div>
           <div>
