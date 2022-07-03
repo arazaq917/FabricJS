@@ -1135,7 +1135,7 @@ const Canvas = () => {
                   ['l', 0, topSide.getScaledHeight() - (fullLineText.getScaledWidth()/2) - 3 ],
               ],{
                   stroke: 'blue',
-                  strokeWidth: 1,
+                  strokeWidth: 2,
                   fill: false,
                   hasBorders: false,
                   evented:false,
@@ -1151,7 +1151,7 @@ const Canvas = () => {
                   ['l', 0, leftSide.getScaledHeight() - (fullLineText.getScaledWidth()/2) - 3 ],
               ],{
                   stroke: 'blue',
-                  strokeWidth: 1,
+                  strokeWidth: 2,
                   fill: false,
                   hasBorders: false,
                   evented:false,
@@ -1167,7 +1167,7 @@ const Canvas = () => {
                   ['l', bottomText.getScaledHeight() / 2 + (bottomText.getScaledHeight() * 0.06),0 ],
               ],{
                   stroke: 'blue',
-                  strokeWidth: 1,
+                  strokeWidth: 2,
                   fill: false,
                   hasBorders: false,
                   evented:false,
@@ -1182,7 +1182,7 @@ const Canvas = () => {
                   ['l', bottomText.getScaledHeight() / 2 + (bottomText.getScaledHeight() * 0.06),0 ]
               ],{
                   stroke: 'blue',
-                  strokeWidth: 1,
+                  strokeWidth: 2,
                   fill: false,
                   hasBorders: false,
                   evented:false,
@@ -1239,7 +1239,7 @@ const Canvas = () => {
                   ['l', 0, topSide.getScaledHeight() - (fullLineText.getScaledWidth()/2) - 3 ],
               ],{
                   stroke: 'blue',
-                  strokeWidth: 1,
+                  strokeWidth: 2,
                   fill: false,
                   hasBorders: false,
                   evented:false,
@@ -1255,7 +1255,7 @@ const Canvas = () => {
                   ['l', 0, rightSide.getScaledHeight() - (fullLineText.getScaledWidth()/2) - 3 ],
               ],{
                   stroke: 'blue',
-                  strokeWidth: 1,
+                  strokeWidth: 2,
                   fill: false,
                   hasBorders: false,
                   evented:false,
@@ -1271,7 +1271,7 @@ const Canvas = () => {
                   ['l', bottomText.getScaledHeight() / 2 + (bottomText.getScaledHeight() * 0.06),0 ],
               ],{
                   stroke: 'blue',
-                  strokeWidth: 1,
+                  strokeWidth: 2,
                   fill: false,
                   hasBorders: false,
                   evented:false,
@@ -1286,7 +1286,7 @@ const Canvas = () => {
                   ['l', bottomText.getScaledHeight() / 2 + (bottomText.getScaledHeight() * 0.06),0 ]
               ],{
                   stroke: 'blue',
-                  strokeWidth: 1,
+                  strokeWidth: 2,
                   fill: false,
                   hasBorders: false,
                   evented:false,
@@ -1381,11 +1381,11 @@ const Canvas = () => {
       height: h,
       left,
       top,
-      fill: "#9dc2c2",
+      fill: "orange",
       borderColor: "red",
       name:'rect-box',
       strokeWidth: 15,
-      stroke: "#4b5555",
+      stroke: "#3F4E4F",
       cornerColor: "red",
       // padding: 15,
       transparentCorners: false,
@@ -1412,8 +1412,8 @@ const Canvas = () => {
       ['l', -rect1.getScaledHeight() * 0.09, -rect1.getScaledWidth() * 0.14],
 
     ], {
-      stroke: 'grey',
-      strokeWidth: 1,
+      stroke: 'orange',
+      strokeWidth: 2,
       fill: false,
       hasBorders: false,
       evented: false,
@@ -1514,7 +1514,7 @@ const Canvas = () => {
       ['l',0, bottomText.getScaledHeight()/2 ]
     ],{
       stroke: 'red',
-      strokeWidth: 1,
+      strokeWidth: 2,
       fill: false,
       hasBorders: false,
       evented:false,
@@ -1531,7 +1531,7 @@ const Canvas = () => {
       ['l',0, bottomText.getScaledHeight()/2 ]
     ],{
       stroke: 'red',
-      strokeWidth: 1,
+      strokeWidth: 2,
       fill: false,
       hasBorders: false,
       evented:false,
@@ -1549,7 +1549,7 @@ const Canvas = () => {
           ['l', leftSide.getScaledWidth() - (fullLineText.getScaledWidth()/2) - (fullLineText.getScaledWidth() * 0.1), 0],
         ],{
           stroke: 'blue',
-          strokeWidth: 1,
+          strokeWidth: 2,
           fill: false,
           hasBorders: false,
           evented:false,
@@ -1565,7 +1565,7 @@ const Canvas = () => {
           ['l', leftSide.getScaledWidth() - (fullLineText.getScaledWidth()/2) - (fullLineText.getScaledWidth() * 0.1), 0],
         ],{
           stroke: 'blue',
-          strokeWidth: 1,
+          strokeWidth: 2,
           fill: false,
           hasBorders: false,
           evented:false,
@@ -1581,7 +1581,7 @@ const Canvas = () => {
           ['l', 0, bottomText.getScaledHeight() / 2 + (bottomText.getScaledHeight() * 0.06)],
         ],{
           stroke: 'blue',
-          strokeWidth: 1,
+          strokeWidth: 2,
           fill: false,
           hasBorders: false,
           evented:false,
@@ -1596,7 +1596,7 @@ const Canvas = () => {
           ['l', 0, bottomText.getScaledHeight() / 2 + (bottomText.getScaledHeight() * 0.06)],
         ],{
           stroke: 'blue',
-          strokeWidth: 1,
+          strokeWidth: 2,
           fill: false,
           hasBorders: false,
           evented:false,
@@ -1616,7 +1616,7 @@ const Canvas = () => {
       ['l', rect.getScaledWidth(), 0],
     ],{
       stroke: 'blue',
-      strokeWidth: 1,
+      strokeWidth: 2,
       fill: false,
       hasBorders: false,
       evented:false,
@@ -1665,7 +1665,7 @@ const Canvas = () => {
       ['l',leftText.getScaledHeight()/2, 0 ]
     ],{
       stroke: 'red',
-      strokeWidth: 1,
+      strokeWidth: 2,
       fill: false,
       hasBorders: false,
       evented:false,
@@ -1681,7 +1681,7 @@ const Canvas = () => {
       ['l',leftText.getScaledHeight()/2, 0 ]
     ],{
       stroke: 'red',
-      strokeWidth: 1,
+      strokeWidth: 2,
       fill: false,
       hasBorders: false,
       evented:false,
@@ -1710,11 +1710,11 @@ const Canvas = () => {
       height: h,
       left,
       top,
-      fill: "#9dc2c2",
       borderColor: "red",
       name:'rect-box',
       strokeWidth: 15,
-      stroke: "#4b5555",
+      fill: "orange",
+      stroke: "#3F4E4F",
       cornerColor: "red",
       // padding: 15,
       transparentCorners: false,
@@ -1732,17 +1732,17 @@ const Canvas = () => {
 
     let rectLines = new fabric.Path([
       ['M', rect1.left, rect1.top],
-      ['l', rect1.getScaledHeight() * 0.09, rect1.getScaledWidth() * 0.14],
+      ['l', rect1.getScaledHeight() * 0.14, rect1.getScaledWidth() * 0.07],
       ['M', rect1.left + rect1.getScaledWidth(), rect1.top],
-      ['l', -rect1.getScaledHeight() * 0.09, rect1.getScaledWidth() * 0.14],
+      ['l', -rect1.getScaledHeight() * 0.14, rect1.getScaledWidth() * 0.07],
       ['M', rect1.left, rect1.top + rect1.getScaledHeight()],
-      ['l', rect1.getScaledHeight() * 0.09, -rect1.getScaledWidth() * 0.14],
+      ['l', rect1.getScaledHeight() * 0.14, -rect1.getScaledWidth() * 0.07],
       ['M', rect1.left + rect1.getScaledWidth(), rect1.top + rect1.getScaledHeight()],
-      ['l', -rect1.getScaledHeight() * 0.09, -rect1.getScaledWidth() * 0.14],
+      ['l', -rect1.getScaledHeight() * 0.14, -rect1.getScaledWidth() * 0.07],
 
     ], {
-      stroke: 'grey',
-      strokeWidth: 1,
+      stroke: 'orange',
+      strokeWidth: 2,
       fill: false,
       hasBorders: false,
       evented: false,
@@ -1817,7 +1817,7 @@ const Canvas = () => {
       ['l',0, topText.getScaledHeight()/2 ]
     ],{
       stroke: 'red',
-      strokeWidth: 1,
+      strokeWidth: 2,
       fill: false,
       hasBorders: false,
       evented:false,
@@ -1834,7 +1834,7 @@ const Canvas = () => {
       ['l',0, topText.getScaledHeight()/2 ]
     ],{
       stroke: 'red',
-      strokeWidth: 1,
+      strokeWidth: 2,
       fill: false,
       hasBorders: false,
       evented:false,
@@ -1850,7 +1850,7 @@ const Canvas = () => {
       ['l', rect.getScaledWidth(), 0],
     ],{
       stroke: 'blue',
-      strokeWidth: 1,
+      strokeWidth: 2,
       fill: false,
       hasBorders: false,
       evented:false,
@@ -1899,7 +1899,7 @@ const Canvas = () => {
       ['l',leftText.getScaledHeight()/2, 0 ]
     ],{
       stroke: 'red',
-      strokeWidth: 1,
+      strokeWidth: 2,
       fill: false,
       hasBorders: false,
       evented:false,
@@ -1915,7 +1915,7 @@ const Canvas = () => {
       ['l',leftText.getScaledHeight()/2, 0 ]
     ],{
       stroke: 'red',
-      strokeWidth: 1,
+      strokeWidth: 2,
       fill: false,
       hasBorders: false,
       evented:false,
