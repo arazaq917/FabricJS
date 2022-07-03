@@ -452,6 +452,7 @@ const Canvas = () => {
   const setTopWindowDimensions =(rect)=>{
     if (!rect) return;
     let tempObjs = tempCanvas._objects;
+      const rangeFlag = inHeightRange();
 
     let bottomTextInd = tempObjs.findIndex(f=>f.name === 'topText' && f.id === rect.id);
     let leftTextInd = tempObjs.findIndex(f=>f.name === 'iTextH' && f.id === rect.id);
@@ -482,27 +483,54 @@ const Canvas = () => {
     topText.set('top', rect.top - topText.getScaledWidth()/2 - bottomOffset);
     topText.set('left', rect.left + (objScaledWidth/2) - (topText.getScaledWidth()/2));
 
-    leftText.left = rect.left - leftOffset;
-    leftText.top = rect.top + (rect.getScaledHeight()/2);
+    if (rangeFlag && rangeFlag === 'right_top'){
+        leftText.left = (rect.left + rect.getScaledWidth()) + leftOffset;
+        leftText.top = rect.top + (rect.getScaledHeight()/2);
 
-    bottomLeftLine.left = rect.left;
-    bottomLeftLine.top = topText.top + topText.getScaledHeight()/4;
+        bottomLeftLine.left = rect.left;
+        bottomLeftLine.top = topText.top + topText.getScaledHeight()/4;
 
-    bottomRightLine.top = topText.top + topText.getScaledHeight()/4;
-    bottomRightLine.left = topText.left + topText.getScaledWidth() + (topText.getScaledWidth() * 0.1);
+        bottomRightLine.top = topText.top + topText.getScaledHeight()/4;
+        bottomRightLine.left = topText.left + topText.getScaledWidth() + (topText.getScaledWidth() * 0.1);
 
-    bottomRightDashedLine.left = rect.left;
-    bottomRightDashedLine.top  =  topText.top - (topText.getScaledHeight()/4.8);
+        bottomRightDashedLine.left = rect.left;
+        bottomRightDashedLine.top  =  topText.top - (topText.getScaledHeight()/4.8);
 
-    leftNodeDash.left = rect.left-1;
-    leftNodeDash.top = rightNodeDash.top =  topText.top - (topText.getScaledHeight()/2);
+        leftNodeDash.left = rect.left-1;
+        leftNodeDash.top = rightNodeDash.top =  topText.top - (topText.getScaledHeight()/2);
 
-    rightNodeDash.left = rect.left + objScaledWidth;
+        rightNodeDash.left = rect.left + objScaledWidth;
 
-    leftTopLine.left = leftText.left - 5;
-    leftTopLine.top = rect.top;
-    leftBottomLine.left  = leftText.left - 5;
-    leftBottomLine.top = leftText.top + (leftText.getScaledWidth()/2);
+        leftTopLine.left = leftText.left - 5;
+        leftTopLine.top = rect.top;
+        leftBottomLine.left  = leftText.left - 5;
+        leftBottomLine.top = leftText.top + (leftText.getScaledWidth()/2);
+    }
+    else {
+        leftText.left = rect.left - leftOffset;
+        leftText.top = rect.top + (rect.getScaledHeight()/2);
+
+        bottomLeftLine.left = rect.left;
+        bottomLeftLine.top = topText.top + topText.getScaledHeight()/4;
+
+        bottomRightLine.top = topText.top + topText.getScaledHeight()/4;
+        bottomRightLine.left = topText.left + topText.getScaledWidth() + (topText.getScaledWidth() * 0.1);
+
+        bottomRightDashedLine.left = rect.left;
+        bottomRightDashedLine.top  =  topText.top - (topText.getScaledHeight()/4.8);
+
+        leftNodeDash.left = rect.left-1;
+        leftNodeDash.top = rightNodeDash.top =  topText.top - (topText.getScaledHeight()/2);
+
+        rightNodeDash.left = rect.left + objScaledWidth;
+
+        leftTopLine.left = leftText.left - 5;
+        leftTopLine.top = rect.top;
+        leftBottomLine.left  = leftText.left - 5;
+        leftBottomLine.top = leftText.top + (leftText.getScaledWidth()/2);
+    }
+
+
 
     tempCanvas.requestRenderAll();
   }
@@ -697,7 +725,7 @@ const Canvas = () => {
       }
     }
   }
-  const setTopWindowPosition =(rect)=>{
+  const setTopWindowPosition =(rect,rangeFlag)=>{
     if (!rect) return;
     let tempObjs = tempCanvas._objects;
 
@@ -731,8 +759,13 @@ const Canvas = () => {
     topText.set('top', rect.top - topText.getScaledWidth()/2 - bottomOffset);
     topText.set('left', rect.left + (rect.getScaledWidth()/2) - (topText.getScaledWidth()/2));
 
-    leftText.set('left', rect.left - leftOffset);
-    leftText.set('top', rect.top + (rect.getScaledHeight()/2));
+    if (rangeFlag && rangeFlag === 'right_top'){
+        leftText.set('left', (rect.left + rect.getScaledWidth()) + leftOffset);
+        leftText.set('top', rect.top + (rect.getScaledHeight()/2));
+    }else{
+        leftText.set('left', rect.left - leftOffset);
+        leftText.set('top', rect.top + (rect.getScaledHeight()/2));
+    }
 
     //ADJUST LINES
 
@@ -844,10 +877,14 @@ const Canvas = () => {
   const objectScaling = (e)=>{
     if (!e.target) return;
     if (e.target.name === 'rect' && e.target.side==='top'){
-       setTopWindowPosition(e.target);
+        const rangeFlag = inHeightRange(e.target);
+        setTopWindowPosition(e.target,rangeFlag);
+        if (rangeFlag) {
+            reAddCommonHeightLine(e.target,rangeFlag);
+        }
     }else {
       setObjectDimensions1(e.target);
-      reAddCommonLine(e.target);
+      reAddCommonWidthLine(e.target);
     }
   }
   const objectScaled = (e)=>{
@@ -882,7 +919,8 @@ const Canvas = () => {
   }
   const movingObject = (e)=>{
     if (!e.target) return;
-    hideNshowCommonLine(e.target);
+      removeOldRectObjs();
+      hideNshowCommonLine(e.target);
     setObjectDimensions(e.target)
   }
   const selectionCreated = (e)=>{
@@ -902,7 +940,7 @@ const Canvas = () => {
       tempHeight = e.selected[0].height;
     }
   }
-  const reAddCommonLine =(rect)=>{
+  const reAddCommonWidthLine =(rect)=>{
     let tempObjs = tempCanvas._objects;
     let leftSide;
     let rightSide;
@@ -1036,10 +1074,275 @@ const Canvas = () => {
     }
 
   }
+
+  const removeOldRectObjs =(topSide)=>{
+      if (!topSide) topSide = tempCanvas._objects.find(o=>o.name ==='rect' && o.side === 'top')
+      if (!topSide) return;
+      for(let i=0; i< tempCanvas._objects.length; i++){
+          if (tempCanvas._objects[i].id === topSide.id && ['full_line_text','leftFullTopLine','leftFullBottomLine','bottomFullNode','topFullNode'].includes(tempCanvas._objects[i].name)){
+              tempCanvas.remove(tempCanvas._objects[i]);
+          }
+      }
+      tempCanvas.requestRenderAll();
+  }
+  const reAddCommonHeightLine =(rect,rangeFlag)=> {
+      let tempObjs = tempCanvas._objects;
+      const leftSideInd = tempObjs.findIndex(o => o.name === "rect" && o.side === "left")
+      const rightSideInd = tempObjs.findIndex(o => o.name === "rect" && o.side === "right")
+      const topSideInd = tempObjs.findIndex(o => o.name === "rect" && o.side === "top")
+      const bottomOffset = 10;
+      const leftOffset = 20;
+      if (rangeFlag === 'left_top') {
+          if (leftSideInd > -1 && topSideInd > -1){
+              let leftSide = tempObjs[leftSideInd];
+              let topSide = tempObjs[topSideInd];
+              let bottomTextInd = tempObjs.findIndex(f => f.name === 'topText' && f.id === topSide.id);
+              let leftTextInd = tempObjs.findIndex(f => f.name === 'iTextH' && f.id === topSide.id);
+              let bottomText = tempObjs[bottomTextInd];
+              let leftText = tempObjs[leftTextInd];
+
+              leftText.set('left', topSide.left - leftOffset);
+              leftText.set('top', topSide.top + (topSide.getScaledHeight()/2));
+
+
+              for(let i=0; i< tempCanvas._objects.length; i++){
+                if (tempCanvas._objects[i].id === topSide.id && ['full_line_text','leftFullTopLine','leftFullBottomLine','bottomFullNode','topFullNode'].includes(tempCanvas._objects[i].name)){
+                  tempCanvas.remove(tempCanvas._objects[i]);
+                }
+              }
+              //common height text
+              let fullLineText = new fabric.IText(`${Math.trunc(leftSide.getScaledHeight() + topSide.getScaledHeight())}`, {
+                  fontFamily: 'Courier New',
+                  name: 'full_line_text',
+                  fontSize: 14,
+                  fontWeight: 700,
+                  evented:false,
+                  selectable:false,
+                  originX:'center',
+                  originY:'center',
+                  fill: '#000000',
+                  id:topSide.id,
+                  angle:-90,
+                  objecttype:'text',
+              });
+              tempCanvas.add(fullLineText);
+              fullLineText.set('left', leftText.left - leftText.getScaledWidth());
+              fullLineText.set('top', topSide.top + topSide.getScaledHeight());
+              fullLineText.set('text', `${Math.trunc(leftSide.getScaledHeight() + topSide.getScaledHeight())}`);
+
+              let leftFullTopLine = reInitPath([
+                  ['M', fullLineText.left, topSide.top],
+                  ['l', 0, topSide.getScaledHeight() - (fullLineText.getScaledWidth()/2) - 3 ],
+              ],{
+                  stroke: 'blue',
+                  strokeWidth: 1,
+                  fill: false,
+                  hasBorders: false,
+                  evented:false,
+                  selectable:false,
+                  objectCaching:false,
+                  id:topSide.id,
+
+                  hasControls: false,
+                  name: "leftFullTopLine",
+              })
+              let leftFullBottomLine = reInitPath([
+                  ['M', fullLineText.left, fullLineText.top + (fullLineText.getScaledWidth()/2) + 3],
+                  ['l', 0, leftSide.getScaledHeight() - (fullLineText.getScaledWidth()/2) - 3 ],
+              ],{
+                  stroke: 'blue',
+                  strokeWidth: 1,
+                  fill: false,
+                  hasBorders: false,
+                  evented:false,
+                  selectable:false,
+                  objectCaching:false,
+                  id:topSide.id,
+
+                  hasControls: false,
+                  name: "leftFullBottomLine",
+              })
+              let lNode = reInitPath([
+                  ['M', fullLineText.left - fullLineText.getScaledWidth()/5.4, leftSide.top + leftSide.getScaledHeight()],
+                  ['l', bottomText.getScaledHeight() / 2 + (bottomText.getScaledHeight() * 0.06),0 ],
+              ],{
+                  stroke: 'blue',
+                  strokeWidth: 1,
+                  fill: false,
+                  hasBorders: false,
+                  evented:false,
+                  selectable:false,
+                  objectCaching:false,
+                  id:topSide.id,
+                  hasControls: false,
+                  name: "bottomFullNode",
+              })
+              let rNode = reInitPath([
+                  ['M', fullLineText.left - fullLineText.getScaledWidth()/5.4, topSide.top],
+                  ['l', bottomText.getScaledHeight() / 2 + (bottomText.getScaledHeight() * 0.06),0 ]
+              ],{
+                  stroke: 'blue',
+                  strokeWidth: 1,
+                  fill: false,
+                  hasBorders: false,
+                  evented:false,
+                  selectable:false,
+                  objectCaching:false,
+                  id:topSide.id,
+
+                  hasControls: false,
+                  name: "topFullNode",
+              })
+              tempCanvas.add(leftFullTopLine,leftFullBottomLine,lNode,rNode)
+              tempCanvas.requestRenderAll();
+              }
+      } else if (rangeFlag === 'right_top') {
+          if (rightSideInd > -1 && topSideInd > -1){
+              let rightSide = tempObjs[rightSideInd];
+              let topSide = tempObjs[topSideInd];
+              let bottomTextInd = tempObjs.findIndex(f => f.name === 'topText' && f.id === topSide.id);
+              let leftTextInd = tempObjs.findIndex(f => f.name === 'iTextH' && f.id === topSide.id);
+              let bottomText = tempObjs[bottomTextInd];
+              let leftText = tempObjs[leftTextInd];
+
+              leftText.set('left', (topSide.left + topSide.getScaledWidth()) + leftOffset);
+              leftText.set('top', topSide.top + (topSide.getScaledHeight()/2));
+
+              for(let i=0; i< tempCanvas._objects.length; i++){
+                if (tempCanvas._objects[i].id === topSide.id && ['full_line_text','leftFullTopLine','leftFullBottomLine','bottomFullNode','topFullNode'].includes(tempCanvas._objects[i].name)){
+                  tempCanvas.remove(tempCanvas._objects[i]);
+                }
+              }
+
+              //common height text
+              let fullLineText = new fabric.IText(`${Math.trunc(rightSide.getScaledHeight() + topSide.getScaledHeight())}`, {
+                  fontFamily: 'Courier New',
+                  name: 'full_line_text',
+                  fontSize: 14,
+                  fontWeight: 700,
+                  evented:false,
+                  selectable:false,
+                  originX:'center',
+                  originY:'center',
+                  fill: '#000000',
+                  id:topSide.id,
+                  angle:-90,
+                  objecttype:'text',
+              });
+              tempCanvas.add(fullLineText);
+              fullLineText.set('left', leftText.left + leftText.getScaledWidth());
+              fullLineText.set('top', topSide.top + topSide.getScaledHeight());
+              fullLineText.set('text', `${Math.trunc(rightSide.getScaledHeight() + topSide.getScaledHeight())}`);
+
+              let leftFullTopLine = reInitPath([
+                  ['M', fullLineText.left, topSide.top],
+                  ['l', 0, topSide.getScaledHeight() - (fullLineText.getScaledWidth()/2) - 3 ],
+              ],{
+                  stroke: 'blue',
+                  strokeWidth: 1,
+                  fill: false,
+                  hasBorders: false,
+                  evented:false,
+                  selectable:false,
+                  objectCaching:false,
+                  id:topSide.id,
+
+                  hasControls: false,
+                  name: "leftFullTopLine",
+              })
+              let leftFullBottomLine = reInitPath([
+                  ['M', fullLineText.left, fullLineText.top + (fullLineText.getScaledWidth()/2) + 3],
+                  ['l', 0, rightSide.getScaledHeight() - (fullLineText.getScaledWidth()/2) - 3 ],
+              ],{
+                  stroke: 'blue',
+                  strokeWidth: 1,
+                  fill: false,
+                  hasBorders: false,
+                  evented:false,
+                  selectable:false,
+                  objectCaching:false,
+                  id:topSide.id,
+
+                  hasControls: false,
+                  name: "leftFullBottomLine",
+              })
+              let lNode = reInitPath([
+                  ['M', fullLineText.left - fullLineText.getScaledWidth()/5.4, rightSide.top + rightSide.getScaledHeight()],
+                  ['l', bottomText.getScaledHeight() / 2 + (bottomText.getScaledHeight() * 0.06),0 ],
+              ],{
+                  stroke: 'blue',
+                  strokeWidth: 1,
+                  fill: false,
+                  hasBorders: false,
+                  evented:false,
+                  selectable:false,
+                  objectCaching:false,
+                  id:topSide.id,
+                  hasControls: false,
+                  name: "bottomFullNode",
+              })
+              let rNode = reInitPath([
+                  ['M', fullLineText.left - fullLineText.getScaledWidth()/5.4, topSide.top],
+                  ['l', bottomText.getScaledHeight() / 2 + (bottomText.getScaledHeight() * 0.06),0 ]
+              ],{
+                  stroke: 'blue',
+                  strokeWidth: 1,
+                  fill: false,
+                  hasBorders: false,
+                  evented:false,
+                  selectable:false,
+                  objectCaching:false,
+                  id:topSide.id,
+
+                  hasControls: false,
+                  name: "topFullNode",
+              })
+              tempCanvas.add(leftFullTopLine,leftFullBottomLine,lNode,rNode)
+              tempCanvas.requestRenderAll();
+              }
+      }
+
+  }
+  const inHeightRange =()=>{
+      let rangeFlag=''
+      let tempObjs = tempCanvas._objects;
+
+      const leftSideInd = tempObjs.findIndex(o=>o.name === "rect" && o.side === "left")
+      const rightSideInd = tempObjs.findIndex(o=>o.name === "rect" && o.side === "right")
+      const topSideInd = tempObjs.findIndex(o=>o.name === "rect" && o.side === "top")
+
+      if (topSideInd > -1 && leftSideInd > -1) {
+          let topSide = tempObjs[topSideInd]
+          let leftSide = tempObjs[leftSideInd]
+          const topSideHeight = topSide.top + topSide.getScaledHeight();
+          const leftSideWidth = leftSide.left + leftSide.getScaledWidth();
+          const offsetBetween = 2;
+
+          if ((topSideHeight === leftSide.top || (topSideHeight > leftSide.top - offsetBetween && topSideHeight < leftSide.top + offsetBetween)) && topSide.left < leftSideWidth) {
+              rangeFlag = 'left_top';
+          }else removeOldRectObjs(topSide);
+      }
+      if (topSideInd > -1 && rightSideInd > -1) {
+          let topSide = tempObjs[topSideInd]
+          let rightSide = tempObjs[rightSideInd]
+          const topSideHeight = topSide.top + topSide.getScaledHeight();
+          const rightSideWidth = rightSide.left + rightSide.getScaledWidth();
+          const offsetBetween = 2;
+
+          if ((topSideHeight === rightSide.top || (topSideHeight > rightSide.top - offsetBetween && topSideHeight < rightSide.top + offsetBetween)) && topSide.left >= rightSide.left) {
+              rangeFlag = 'right_top';
+          }else removeOldRectObjs(topSide);
+      }
+      return rangeFlag;
+  }
   const modifiedObject = (e)=>{
     if (!e.target) return;
     let rect = e.target;
-    reAddCommonLine(rect)
+    reAddCommonWidthLine(rect)
+    const rangeFlag = inHeightRange(rect);
+    if (rangeFlag) {
+        reAddCommonHeightLine(rect,rangeFlag);
+    }
   }
   // Canvas Function
   window.canvas = canvas;
@@ -1621,7 +1924,9 @@ const Canvas = () => {
       hasControls: false,
       name: "left_bottom_line",
     })
-    canvas.add(bottomLeftLine,bottomRightLine,leftTopLine,leftBottomLine,bottomRightDashedLine,leftNodeDash,rightNodeDash)
+      // Common height line
+
+      canvas.add(bottomLeftLine,bottomRightLine,leftTopLine,leftBottomLine,bottomRightDashedLine,leftNodeDash,rightNodeDash)
     canvas.discardActiveObject();
     canvas.setActiveObject(rect);
     canvas.renderAll();
