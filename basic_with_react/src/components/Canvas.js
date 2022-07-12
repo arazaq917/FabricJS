@@ -134,30 +134,36 @@ const Canvas = () => {
         aligningLineOffset = 5,
         aligningLineMargin = 4,
         aligningLineWidth = 2,
-        aligningLineColor = 'rgb(255,0,0)',
+        aligningLineColor = 'rgb(173,14,120)',
         viewportTransform,
         zoom = 1;
 
-    const drawVerticalLine = (coords) => {
+    const drawVerticalLine = (coords,isBetFlag=false) => {
       drawLine(
           coords.x + 0.5,
           coords.y1 > coords.y2 ? coords.y2 : coords.y1,
           coords.x + 0.5,
-          coords.y2 > coords.y1 ? coords.y2 : coords.y1);
+          coords.y2 > coords.y1 ? coords.y2 : coords.y1,
+          isBetFlag);
     }
 
-    const drawHorizontalLine = (coords) => {
+    const drawHorizontalLine = (coords,isBetFlag=false) => {
       drawLine(
           coords.x1 > coords.x2 ? coords.x2 : coords.x1,
           coords.y + 0.5,
           coords.x2 > coords.x1 ? coords.x2 : coords.x1,
-          coords.y + 0.5);
+          coords.y + 0.5,
+          isBetFlag);
     }
 
-    const drawLine = (x1, y1, x2, y2) => {
+    const drawLine = (x1, y1, x2, y2,isBetFlag) => {
       ctx.save();
       ctx.lineWidth = aligningLineWidth;
       ctx.strokeStyle = aligningLineColor;
+      if (isBetFlag) {
+        ctx.lineWidth = 6;
+        ctx.strokeStyle = 'rgb(0,255,0)';
+      }
       ctx.beginPath();
       ctx.moveTo(((x1+viewportTransform[4])*zoom), ((y1+viewportTransform[5])*zoom));
       ctx.lineTo(((x2+viewportTransform[4])*zoom), ((y2+viewportTransform[5])*zoom));
@@ -250,6 +256,36 @@ const Canvas = () => {
           });
           activeObject.setPositionByOrigin(new fabric.Point(objectLeft + objectWidth / 2 - activeObjectWidth / 2, activeObjectTop), 'center', 'center');
         }
+        // MIDDLE LINE FOR COMMON WIDTH
+        if (isInRange(objectLeft + (objectWidth / 2), activeObjectLeft - activeObjectWidth / 2)) {
+          verticalInTheRange = true;
+          verticalLines.push({
+            x: objectLeft + objectWidth / 2,
+            y1: (objectTop < activeObjectTop)
+                ? (objectTop - objectHeight / 2)
+                : (objectTop + objectHeight / 2),
+            y2: (activeObjectTop > objectTop)
+                ? (activeObjectTop + activeObjectHeight / 2)
+                : (activeObjectTop - activeObjectHeight / 2),
+            inBetFlag:true
+          });
+          // activeObject.setPositionByOrigin({x:objectLeft + objectWidth / 2 + ((activeObjectWidth / 2) - 5),y: activeObjectTop}, 'center', 'center');
+        }
+        // MIDDLE LINE FOR COMMON HEIGHT
+        if (isInRange(objectTop - objectHeight/2, activeObjectTop + activeObjectHeight / 2)) {
+          horizontalInTheRange = true;
+          horizontalLines.push({
+            y: objectTop - objectHeight/2,
+            x1: (objectLeft < activeObjectLeft)
+                ? (objectLeft - objectWidth / 2)
+                : (objectLeft + objectWidth / 2),
+            x2: (activeObjectLeft > objectLeft)
+                ? (activeObjectLeft + activeObjectWidth / 2)
+                : (activeObjectLeft - activeObjectWidth / 2),
+            inBetFlag:true
+          });
+          // activeObject.setPositionByOrigin(new fabric.Point(activeObjectLeft, objectTop), 'center', 'center');
+        }
 
         // snap by the vertical center line
         if (isInRange(objectTop, activeObjectTop)) {
@@ -312,10 +348,15 @@ const Canvas = () => {
 
     canvas.on('after:render', function() {
       for (var i = verticalLines.length; i--; ) {
-        drawVerticalLine(verticalLines[i]);
+        if (verticalLines[i].hasOwnProperty('inBetFlag')){
+          drawVerticalLine(verticalLines[i],true);
+        }else drawVerticalLine(verticalLines[i]);
       }
       for (var i = horizontalLines.length; i--; ) {
-        drawHorizontalLine(horizontalLines[i]);
+        if (horizontalLines[i].hasOwnProperty('inBetFlag')){
+          drawHorizontalLine(horizontalLines[i],true);
+        }else drawHorizontalLine(horizontalLines[i]);
+
       }
 
       verticalLines.length = horizontalLines.length = 0;
@@ -940,6 +981,18 @@ const Canvas = () => {
       tempHeight = e.selected[0].height;
     }
   }
+  const isInRange1 = (value1, value2) => {
+    var aligningLineMargin = 4;
+
+    value1 = Math.round(value1);
+    value2 = Math.round(value2);
+    for (var i = value1 - aligningLineMargin, len = value1 + aligningLineMargin; i <= len; i++) {
+      if (i === value2) {
+        return true;
+      }
+    }
+    return false;
+  }
   const reAddCommonWidthLine =(rect)=>{
     let tempObjs = tempCanvas._objects;
     let leftSide;
@@ -962,10 +1015,9 @@ const Canvas = () => {
 
     if (!rightSide) return;
 
-    const LEFTSIDEWIDTH = leftSide.left + leftSide.getScaledWidth()
     const offsetBetween = 2;
 
-    if (LEFTSIDEWIDTH === rightSide.left || (LEFTSIDEWIDTH > rightSide.left - offsetBetween && LEFTSIDEWIDTH < rightSide.left + offsetBetween)){
+    if (isInRange1(leftSide.left + (leftSide.getScaledWidth() / 2), rightSide.left - rightSide.getScaledWidth() / 2)){
       let bottomTextInd = tempObjs.findIndex(f=>f.name === 'iText' && f.id === rect.id);
       let leftTextInd = tempObjs.findIndex(f=>f.name === 'iTextH' && f.id === rect.id);
 
@@ -973,6 +1025,7 @@ const Canvas = () => {
 
       let fullLineTextInd,bottomFullLeftLineInd,bottomFullRightLineInd,lNodeInd,rNodeInd;
       if (rightSide){
+        rightSide.set('left',leftSide.left + leftSide.getScaledWidth() - offsetBetween)
         fullLineTextInd = tempObjs.findIndex(f=>f.name === 'full_line_text' && f.id.includes(rect.id));
         bottomFullLeftLineInd = tempObjs.findIndex(f=>f.name === 'bottomFullLeftLine' && f.id.includes(rect.id));
         bottomFullRightLineInd = tempObjs.findIndex(f=>f.name === 'bottomFullRightLine' && f.id.includes(rect.id));
@@ -1316,7 +1369,7 @@ const Canvas = () => {
           let leftSide = tempObjs[leftSideInd]
           const topSideHeight = topSide.top + topSide.getScaledHeight();
           const leftSideWidth = leftSide.left + leftSide.getScaledWidth();
-          const offsetBetween = 2;
+          const offsetBetween = 5;
 
           if ((topSideHeight === leftSide.top || (topSideHeight > leftSide.top - offsetBetween && topSideHeight < leftSide.top + offsetBetween)) && topSide.left < leftSideWidth) {
               rangeFlag = 'left_top';
