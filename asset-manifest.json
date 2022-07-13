@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/FabricJS/static/css/main.a632a022.css",
-    "main.js": "/FabricJS/static/js/main.c5ca2205.js",
+    "main.js": "/FabricJS/static/js/main.b59bcdd6.js",
     "index.html": "/FabricJS/index.html",
     "main.a632a022.css.map": "/FabricJS/static/css/main.a632a022.css.map",
-    "main.c5ca2205.js.map": "/FabricJS/static/js/main.c5ca2205.js.map"
+    "main.b59bcdd6.js.map": "/FabricJS/static/js/main.b59bcdd6.js.map"
   },
   "entrypoints": [
     "static/css/main.a632a022.css",
-    "static/js/main.c5ca2205.js"
+    "static/js/main.b59bcdd6.js"
   ]
 }
