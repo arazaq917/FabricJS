@@ -271,6 +271,21 @@ const Canvas = () => {
           });
           // activeObject.setPositionByOrigin({x:objectLeft + objectWidth / 2 + ((activeObjectWidth / 2) - 5),y: activeObjectTop}, 'center', 'center');
         }
+        // MIDDLE LINE FOR COMMON WIDTH
+        if (isInRange(objectLeft - (objectWidth / 2), activeObjectLeft + activeObjectWidth / 2)) {
+          verticalInTheRange = true;
+          verticalLines.push({
+            x: objectLeft - (objectWidth / 2),
+            y1: (objectTop < activeObjectTop)
+                ? (objectTop - objectHeight / 2)
+                : (objectTop + objectHeight / 2),
+            y2: (activeObjectTop > objectTop)
+                ? (activeObjectTop + activeObjectHeight / 2)
+                : (activeObjectTop - activeObjectHeight / 2),
+            inBetFlag:true
+          });
+          // activeObject.setPositionByOrigin({x:objectLeft + objectWidth / 2 + ((activeObjectWidth / 2) - 5),y: activeObjectTop}, 'center', 'center');
+        }
         // MIDDLE LINE FOR COMMON HEIGHT
         if (isInRange(objectTop - objectHeight/2, activeObjectTop + activeObjectHeight / 2)) {
           horizontalInTheRange = true;
@@ -594,7 +609,7 @@ const Canvas = () => {
     if (rightSideInd > -1) rightSide = tempObjs[rightSideInd]
 
     const LEFTSIDEWIDTH = leftSide.left + leftSide.getScaledWidth()
-    const offsetBetween = 2;
+    const offsetBetween = 4;
 
 
     let fullLineTextInd;
@@ -1014,10 +1029,12 @@ const Canvas = () => {
     if (rightSideInd > -1) rightSide = tempObjs[rightSideInd]
 
     if (!rightSide) return;
+    const LEFTSIDEWIDTH = leftSide.left + leftSide.getScaledWidth()
+    const offsetBetween = 4;
 
-    const offsetBetween = 2;
+    if (LEFTSIDEWIDTH === rightSide.left || (LEFTSIDEWIDTH > rightSide.left - offsetBetween && LEFTSIDEWIDTH < rightSide.left + offsetBetween)){
 
-    if (isInRange1(leftSide.left + (leftSide.getScaledWidth() / 2), rightSide.left - rightSide.getScaledWidth() / 2)){
+    // if (isInRange1(leftSide.left + (leftSide.getScaledWidth() / 2), rightSide.left - rightSide.getScaledWidth() / 2) || isInRange1(leftSide.left - (leftSide.getScaledWidth() / 2), rightSide.left + rightSide.getScaledWidth() / 2)){
       let bottomTextInd = tempObjs.findIndex(f=>f.name === 'iText' && f.id === rect.id);
       let leftTextInd = tempObjs.findIndex(f=>f.name === 'iTextH' && f.id === rect.id);
 
@@ -1025,7 +1042,7 @@ const Canvas = () => {
 
       let fullLineTextInd,bottomFullLeftLineInd,bottomFullRightLineInd,lNodeInd,rNodeInd;
       if (rightSide){
-        rightSide.set('left',leftSide.left + leftSide.getScaledWidth() - offsetBetween)
+        // rightSide.set('left',leftSide.left + leftSide.getScaledWidth() - offsetBetween)
         fullLineTextInd = tempObjs.findIndex(f=>f.name === 'full_line_text' && f.id.includes(rect.id));
         bottomFullLeftLineInd = tempObjs.findIndex(f=>f.name === 'bottomFullLeftLine' && f.id.includes(rect.id));
         bottomFullRightLineInd = tempObjs.findIndex(f=>f.name === 'bottomFullRightLine' && f.id.includes(rect.id));
@@ -1369,7 +1386,7 @@ const Canvas = () => {
           let leftSide = tempObjs[leftSideInd]
           const topSideHeight = topSide.top + topSide.getScaledHeight();
           const leftSideWidth = leftSide.left + leftSide.getScaledWidth();
-          const offsetBetween = 5;
+          const offsetBetween = 4;
 
           if ((topSideHeight === leftSide.top || (topSideHeight > leftSide.top - offsetBetween && topSideHeight < leftSide.top + offsetBetween)) && topSide.left < leftSideWidth) {
               rangeFlag = 'left_top';
@@ -1380,7 +1397,7 @@ const Canvas = () => {
           let rightSide = tempObjs[rightSideInd]
           const topSideHeight = topSide.top + topSide.getScaledHeight();
           const rightSideWidth = rightSide.left + rightSide.getScaledWidth();
-          const offsetBetween = 2;
+          const offsetBetween = 4;
 
           if ((topSideHeight === rightSide.top || (topSideHeight > rightSide.top - offsetBetween && topSideHeight < rightSide.top + offsetBetween)) && topSide.left >= rightSide.left) {
               rangeFlag = 'right_top';
